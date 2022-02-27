@@ -1,33 +1,48 @@
 package com.matdi.backend.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.RequiredArgsConstructor;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
+
+@OpenAPIDefinition(
+        info = @Info(title = "MatDi API",
+                description = "MatDi API 명세서.",
+                version = "v1"))
 @Configuration
+@RequiredArgsConstructor
 public class SwaggerConfig {
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.OAS_30)
-                .useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.matdi.backend.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+    public GroupedOpenApi customTestOpenAPi() {
+        // /test 로 시작하는 API 들을 테스트 관련 API 로 그룹핑
+        // member 로 시작하는 API 를 그룹핑 하고 싶다 라고 하면 메소드 이름을 변경하고 하나 더 만들어서 설정하면 됨
+
+        String[] paths = {"/test/**"};
+
+        return GroupedOpenApi
+                .builder()
+                .group("MatDi API")
+                .pathsToMatch(paths)
+                .addOpenApiCustomiser(buildSecurityOpenApi()).build();
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("MatDi")
-                .description("맛디 Swagger API")
-                .version("1.0")
-                .build();
+    public OpenApiCustomiser buildSecurityOpenApi() {
+        // jwt token 을 한번 설정하면 header 에 값을 넣어주는 코드, 자세한건 아래에 추가적으로 설명할 예정
+
+        return OpenApi -> OpenApi.addSecurityItem(new SecurityRequirement().addList("jwt token"))
+                .getComponents().addSecuritySchemes("jwt token", new SecurityScheme()
+                        .name("Authorization")
+                        .type(SecurityScheme.Type.HTTP)
+                        .in(SecurityScheme.In.HEADER)
+                        .bearerFormat("JWT")
+                        .scheme("bearer"));
     }
+
 }
