@@ -1,6 +1,8 @@
 package com.matdi.backend.security;
 
 import com.matdi.backend.config.MvcConfig;
+import com.matdi.backend.security.filter.JwtAuthFilter;
+import com.matdi.backend.security.jwt.HeaderTokenExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하도록함
@@ -21,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MvcConfig mvcConfig;
+    private final HeaderTokenExtractor headerTokenExtractor;
 
     // BCryptPasswordEncoder는 Spring Security에서 제공하는 비밀번호 암호화 객체
     @Bean
@@ -38,7 +44,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring();
+                .ignoring()
+                .antMatchers("/h2-console/**")
+                .antMatchers("/v2/api-docs", "/swagger-resources/**", "**/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+
     }
 
      /*HttpSecurity 를 사용하면 선택 일치를 기반으로 리소스 수준에서 웹 기반 보안을 구성
@@ -46,7 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.httpBasic().disable();
         // Cors 설정
+
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -55,8 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
 
     @Bean
     public FormLoginFilter formLoginFilter() throws Exception {
@@ -67,6 +81,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return formLoginFilter;
     }
 
+    private JwtAuthFilter jwtFilter() throws Exception {
+        List<String> skipPathList = new ArrayList<>();
 
+        skipPathList.add("GET,/oauth/callback/kakao");
+
+ /*       // h2-console 허용.
+        skipPathList.add("GET,/h2-console/**");
+        skipPathList.add("POST,/h2-console/**");*/
+
+        // 회원 관리 API 허용
+        skipPathList.add("GET,/user/**");
+        skipPathList.add("POST,/user/signup");
+
+        // Image View 허용
+        skipPathList.add("GET,/images/**");
+        skipPathList.add("GET,/"); // 임시...
+
+        // Swagger
+        skipPathList.add("GET, /swagger-ui.html");
+        skipPathList.add("GET, /swagger/**");
+        skipPathList.add("GET, /swagger-resources/**");
+        skipPathList.add("GET, /webjars/**");
+        skipPathList.add("GET, /v2/api-docs");
+
+        FilterSkipMatcher matcher = new FilterSkipMatcher(
+                skipPathList,
+                "/**"
+        );
+
+        JwtAuthFilter filter = new JwtAuthFilter(
+                matcher,
+                headerTokenExtractor
+        );
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+
+        return filter;
+    }
 
 }
