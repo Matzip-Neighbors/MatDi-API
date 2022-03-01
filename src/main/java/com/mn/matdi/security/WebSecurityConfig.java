@@ -1,8 +1,8 @@
-package com.matdi.backend.security;
+package com.mn.matdi.security;
 
-import com.matdi.backend.config.MvcConfig;
-import com.matdi.backend.security.filter.JwtAuthFilter;
-import com.matdi.backend.security.jwt.HeaderTokenExtractor;
+import com.mn.matdi.config.MvcConfig;
+import com.mn.matdi.security.filter.JwtAuthFilter;
+import com.mn.matdi.security.jwt.HeaderTokenExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

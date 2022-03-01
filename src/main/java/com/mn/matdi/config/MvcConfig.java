@@ -1,4 +1,4 @@
-package com.matdi.backend.config;
+package com.mn.matdi.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;

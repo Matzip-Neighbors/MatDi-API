@@ -1,4 +1,4 @@
-package com.matdi.backend.security.jwt;
+package com.mn.matdi.security.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 

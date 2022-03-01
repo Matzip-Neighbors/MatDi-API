@@ -1,4 +1,4 @@
-package com.matdi.backend.security;
+package com.mn.matdi.security;
 
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;

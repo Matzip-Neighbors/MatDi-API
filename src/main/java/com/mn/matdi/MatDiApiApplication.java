@@ -1,4 +1,4 @@
-package com.matdi.backend;
+package com.mn.matdi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
