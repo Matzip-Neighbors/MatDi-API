@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew build -x test
 
       - name: Test with Gradle # test application build
-        run: ./gradlew --info test
+        run: ./gradlew test
 
       - name: Publish Unit Test Results # test 후 result를 보기 위해 추가
         uses: EnricoMi/publish-unit-test-result-action@v1
