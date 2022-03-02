@@ -2,7 +2,10 @@ package com.mn.matdi.security;
 
 import com.mn.matdi.config.MvcConfig;
 import com.mn.matdi.security.filter.JwtAuthFilter;
+import com.mn.matdi.security.filter.JwtAuthenticationFilter;
+import com.mn.matdi.security.filter.JwtTokenProvider;
 import com.mn.matdi.security.jwt.HeaderTokenExtractor;
+import com.mn.matdi.security.provider.JWTAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +29,9 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MvcConfig mvcConfig;
+    private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // BCryptPasswordEncoder는 Spring Security에서 제공하는 비밀번호 암호화 객체
     @Bean
@@ -37,7 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // AuthenticationProviders를 쉽게 추가 할 수 있도록하여 인증 메커니즘을 설정하는 데 사용
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        // CustomAuthenticationProvider()를 호출하기 위해서 Overriding
+        auth
+                //.authenticationProvider(formLoginAuthProvider())
+                .authenticationProvider(jwtAuthProvider);
     }
 
     // js, css, image 설정은 보안 설정의 영향 밖에 있도록 만들어주는 설정.
@@ -56,8 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.httpBasic().disable();
-        // Cors 설정
-
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -66,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -85,10 +92,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         List<String> skipPathList = new ArrayList<>();
 
         skipPathList.add("GET,/oauth/callback/kakao");
-
- /*       // h2-console 허용.
-        skipPathList.add("GET,/h2-console/**");
-        skipPathList.add("POST,/h2-console/**");*/
 
         // 회원 관리 API 허용
         skipPathList.add("GET,/user/**");
