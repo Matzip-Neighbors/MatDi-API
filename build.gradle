@@ -44,6 +44,7 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 
@@ -53,6 +54,8 @@ jacoco {
 }
 
 jacocoTestReport {
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+
     reports {
         xml.enabled = true // codecov depends on xml format report
         html.enabled = true
