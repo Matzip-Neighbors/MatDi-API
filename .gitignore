@@ -36,6 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-### properties ###
-src/main/resources/
-src/main/resources/application.properties
+### 설정파일 ###
+src/main/resources/*.yml
+src/main/resources/*.yaml
+src/main/resources/*.properties
