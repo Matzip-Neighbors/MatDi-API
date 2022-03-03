@@ -28,7 +28,6 @@ import java.util.List;
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MvcConfig mvcConfig;
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
     private final JwtTokenProvider jwtTokenProvider;
@@ -52,9 +51,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers("/h2-console/**")
-                .antMatchers("/v2/api-docs", "/swagger-resources/**", "**/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+            .ignoring()
+            .antMatchers(
+                 "/v2/api-docs",
+                            "/swagger-resources/**",
+                            "**/swagger-resources/**",
+                            "/swagger-ui/**",
+                            "/webjars/**",
+                            "/swagger/**"
+            );
 
     }
 
@@ -65,16 +70,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.httpBasic().disable();
         http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            .authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 
@@ -102,7 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/"); // 임시...
 
         // Swagger
-        skipPathList.add("GET, /swagger-ui.html");
+        skipPathList.add("GET, /swagger-ui/**");
         skipPathList.add("GET, /swagger/**");
         skipPathList.add("GET, /swagger-resources/**");
         skipPathList.add("GET, /webjars/**");

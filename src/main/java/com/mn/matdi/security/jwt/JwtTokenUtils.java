@@ -2,6 +2,7 @@ package com.mn.matdi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.mn.matdi.security.userdetail.UserDetailsImpl;
 
 import java.util.Date;
 
@@ -24,7 +25,7 @@ public class JwtTokenUtils {
         String token = null;
         try {
             token = JWT.create()
-                    .withIssuer("sparta")
+                    .withIssuer("matdi")
                     .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
