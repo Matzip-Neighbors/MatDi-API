@@ -164,6 +164,7 @@ public class KakaoUserService {
             // 카카오 가입 유형 코드
             String kakaoRegTpCd = "0020";
 
+            // 유저 상태코드(탈퇴여부)
             String userStatCd = "0010";
 
             kakaoUser = Optional.ofNullable(User.builder()
