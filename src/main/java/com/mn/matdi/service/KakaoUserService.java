@@ -6,12 +6,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mn.matdi.dto.KakaoUser;
 import com.mn.matdi.entity.User;
 import com.mn.matdi.mapper.UserMapper;
+import com.mn.matdi.security.jwt.JwtTokenUtils;
+import com.mn.matdi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -32,7 +37,7 @@ public class KakaoUserService {
     private String clientId;
     private String accessToken;
 
-    public KakaoUser.Response kakaoLogin(String code) {
+    public KakaoUser.Response kakaoLogin(String code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -52,8 +57,8 @@ public class KakaoUserService {
         KakaoUser.Response kakaoUserResponseDto = KakaoUser.Response.builder()
                 .token(TOKEN_TYPE + " " + jwt_token)
                 .userId(kakaoUser.getId())
-                .nickname(kakaoUser.getUser_nm())
-                .profileImage(kakaoUser.getUser_prof_photo_path())
+                .nickname(kakaoUser.getUserNm())
+                .profileImage(kakaoUser.getUserProfPhotoPath())
                 .build();
         System.out.println("kakao user's token : " + TOKEN_TYPE + " " + jwt_token);
         System.out.println("LOGIN SUCCESS!");
@@ -69,7 +74,8 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", clientId);
-        body.add("redirect_uri", "http://localhost:3000/redirect/kakao");
+        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+//        body.add("redirect_uri", "http://localhost:3000/redirect/kakao");
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -98,12 +104,12 @@ public class KakaoUserService {
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         // HTTP 요청 보내기
-        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+        HttpEntity<MultiValueMap<String, String>> kakaoUserRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
                 "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.POST,
-                kakaoUserInfoRequest,
+                kakaoUserRequest,
                 String.class
         );
 
@@ -123,20 +129,20 @@ public class KakaoUserService {
     }
 
 
-    private User registerKakaoOrUpdateKakao(KakaoUser.Response kakaoUserInfoDto) {
-        Optional<User> sameUser = userMapper.findByUserEmail(kakaoUserInfoDto.getEmail());
+    private User registerKakaoOrUpdateKakao(KakaoUser.Response kakaoUserDto) {
+        Optional<User> sameUser = userMapper.findByUserEmail(kakaoUserDto.getEmail());
 
-        if (sameUser.isPresent()) {
-            return updateKakaoUser(sameUser, kakaoUserInfoDto);
-        } else {
-            return registerKakaoUserIfNeeded(kakaoUserInfoDto);
+        if (!sameUser.isPresent()) {
+            return registerKakaoUserIfNeeded(kakaoUserDto);
         }
+
+        return sameUser.get();
     }
 
 
-    private User registerKakaoUserIfNeeded(KakaoUser.Response kakaoUserInfoDto) {
+    private User registerKakaoUserIfNeeded(KakaoUser.Response kakaoUserDto) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
-        String kakaoEmail = kakaoUserInfoDto.getEmail();
+        String kakaoEmail = kakaoUserDto.getEmail();
         Optional<User> kakaoUser = userMapper.findByUserEmail(kakaoEmail);
 
         if (!kakaoUser.isPresent()) {
@@ -145,40 +151,40 @@ public class KakaoUserService {
             String username = "KAKAO" + UUID.randomUUID();
 
             // username: kakao nickname
-            String nickname = kakaoUserInfoDto.getNickname();
-            Optional<User> user = userRepository.findByNickname(nickname);
-            if(user.isPresent()) {
-                String dbUserNickname = user.get().getNickname();
-
-                int beginIndex= nickname.length();
-                String nicknameIndex = dbUserNickname.substring(beginIndex, dbUserNickname.length());
-
-                if (!nicknameIndex.isEmpty()) {
-                    int newIndex = Integer.parseInt(nicknameIndex) + 1;
-                    nickname = nickname + newIndex;
-                } else {
-                    nickname = dbUserNickname + 1;
-                }
-            }
+            String nickname = kakaoUserDto.getNickname();
 
 
             // profileImage: kakao profile image
-            String profileImage = kakaoUserInfoDto.getProfileImage();
+            String profileImage = kakaoUserDto.getProfileImage();
 
             // password: random UUID
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
 
-            kakaoUser = User.builder()
-                    .username(username)
-                    .password(encodedPassword)
-                    .nickname(nickname)
-                    .kakaoId(kakaoId)
-                    .profileImage(profileImage)
-                    .build();
-            userMapper.save(kakaoUser);
+            // 카카오 가입 유형 코드
+            String kakaoRegTpCd = "0020";
+
+            String userStatCd = "0010";
+
+            kakaoUser = Optional.ofNullable(User.builder()
+                    .email(username)
+                    .userPwd(encodedPassword)
+                    .userNm(nickname)
+                    .userProfPhotoPath(profileImage)
+                    .userRegTpCd(kakaoRegTpCd)
+                    .userStatCd(userStatCd)
+                    .build());
+            userMapper.insertKakaoUser(kakaoUser.get());
         }
 
         return kakaoUser.get();
+    }
+
+    private String forceLogin(User kakaoUser) {
+        UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return JwtTokenUtils.generateJwtToken(userDetails);
     }
 }

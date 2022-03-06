@@ -9,7 +9,7 @@ public class KakaoUser {
     @Getter
     @Builder
     @AllArgsConstructor
-    public class Response {
+    public static class Response {
         private String token;
         private Long userId;
         private String email;
