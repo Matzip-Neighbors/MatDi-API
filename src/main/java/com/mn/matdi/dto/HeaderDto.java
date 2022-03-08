@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HeaderDto {
     private String TOKEN;
-    private Long userId;
-    private String nickName;
-    private String profileImg;
-    private String address;
+    private Long user_id;
+    private String user_nm;
+    private String email;
+    private String user_prof_photo_path;
 
 
 /*    public static HeaderDto createHeaderDto(String token, User kakaoUser){

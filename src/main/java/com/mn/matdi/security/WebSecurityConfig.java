@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
             .authorizeRequests()
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -95,6 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
+
+        skipPathList.add("POST,/users/**");
+        skipPathList.add("POST,/users/signup");
 
         skipPathList.add("GET,/oauth/callback/kakao");
 
