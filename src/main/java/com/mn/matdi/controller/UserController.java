@@ -1,13 +1,10 @@
 package com.mn.matdi.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mn.matdi.dto.HeaderDto;
 import com.mn.matdi.dto.UserDto;
 import com.mn.matdi.service.KakaoUserService;
+import com.mn.matdi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
