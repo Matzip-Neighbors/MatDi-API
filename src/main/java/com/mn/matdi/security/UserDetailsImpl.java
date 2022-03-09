@@ -1,4 +1,4 @@
-package com.mn.matdi.security.userdetail;
+package com.mn.matdi.security;
 
 
 import com.mn.matdi.entity.User;
@@ -22,6 +22,7 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
+
     @Override
     public String getUsername() {
         return user.getEmail();
@@ -29,7 +30,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getUser_pwd();
+        return user.getUserPwd();
     }
 
     @Override

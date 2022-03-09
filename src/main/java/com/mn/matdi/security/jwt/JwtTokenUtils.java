@@ -2,7 +2,7 @@ package com.mn.matdi.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.mn.matdi.security.userdetail.UserDetailsImpl;
+import com.mn.matdi.security.UserDetailsImpl;
 
 import java.util.Date;
 
@@ -19,6 +19,7 @@ public class JwtTokenUtils {
 
     public static final String CLAIM_EXPIRED_DATE = "EXPIRED_DATE";
     public static final String CLAIM_USER_NAME = "USER_NAME";
+    public static final String CLAIM_USER_PASSWORD = "USER_PASSWORD";
     public static final String JWT_SECRET = "jwt_secret_!@#$%";
 
     public static String generateJwtToken(UserDetailsImpl userDetails) {
@@ -27,6 +28,7 @@ public class JwtTokenUtils {
             token = JWT.create()
                     .withIssuer("matdi")
                     .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
+                    .withClaim(CLAIM_USER_PASSWORD, userDetails.getPassword())
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
                     .sign(generateAlgorithm());
