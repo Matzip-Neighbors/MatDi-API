@@ -21,15 +21,15 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi customTestOpenAPi() {
-        // /test 로 시작하는 API 들을 테스트 관련 API 로 그룹핑
+        // /api/** 로 시작하는 API 들을 테스트 관련 API 로 그룹핑
         // member 로 시작하는 API 를 그룹핑 하고 싶다 라고 하면 메소드 이름을 변경하고 하나 더 만들어서 설정하면 됨
 
-        String[] paths = {"/test/**"};
+//        String[] paths = {"/api/**"};
 
         return GroupedOpenApi
                 .builder()
-                .group("MatDi API")
-                .pathsToMatch(paths)
+                .group("MatDi")
+//                .pathsToMatch(paths)
                 .addOpenApiCustomiser(buildSecurityOpenApi()).build();
     }
 

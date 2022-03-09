@@ -1,7 +1,7 @@
 package com.mn.matdi.security.provider;
 
 import com.mn.matdi.entity.User;
-import com.mn.matdi.mapper.UserMapper;
+import com.mn.matdi.mapper.KakaoUserMapper;
 import com.mn.matdi.security.UserDetailsImpl;
 import com.mn.matdi.security.jwt.JwtDecoder;
 import com.mn.matdi.security.jwt.JwtPreProcessingToken;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class JWTAuthProvider implements AuthenticationProvider {
     private final JwtDecoder jwtDecoder;
 
-    private final UserMapper userMapper;
+    private final KakaoUserMapper userMapper;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

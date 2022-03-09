@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mn.matdi.dto.KakaoUser;
 import com.mn.matdi.entity.User;
-import com.mn.matdi.mapper.UserMapper;
+import com.mn.matdi.mapper.KakaoUserMapper;
 import com.mn.matdi.security.jwt.JwtTokenUtils;
 import com.mn.matdi.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.UUID;
 public class KakaoUserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
+    private final KakaoUserMapper userMapper;
 
     @Value("${kakao.client-id}")
     private String clientId;
@@ -42,10 +42,10 @@ public class KakaoUserService {
         String accessToken = getAccessToken(code);
 
         // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
-        KakaoUser.Response snsUserInfoDto = getKakaoUserInfo(accessToken);
+        KakaoUser.Response kakaoUserDto = getKakaoUserInfo(accessToken);
 
         // 3. "카카오 사용자 정보"로 필요시 회원가입  및 이미 같은 이메일이 있으면 기존회원으로 로그인
-        User kakaoUser = registerKakaoOrUpdateKakao(snsUserInfoDto);
+        User kakaoUser = registerKakaoOrUpdateKakao(kakaoUserDto);
 
         // 4. 강제 로그인 처리
         final String AUTH_HEADER = "Authorization";
@@ -54,15 +54,17 @@ public class KakaoUserService {
         String jwt_token = forceLogin(kakaoUser); // 로그인처리 후 토큰 받아오기
         HttpHeaders headers = new HttpHeaders();
         headers.set(AUTH_HEADER, TOKEN_TYPE + " " + jwt_token);
+
         KakaoUser.Response kakaoUserResponseDto = KakaoUser.Response.builder()
                 .token(TOKEN_TYPE + " " + jwt_token)
-                .userId(kakaoUser.getId())
+                .email(kakaoUser.getEmail())
                 .nickname(kakaoUser.getUserNm())
                 .profileImage(kakaoUser.getUserProfPhotoPath())
                 .build();
         System.out.println("kakao user's token : " + TOKEN_TYPE + " " + jwt_token);
         System.out.println("LOGIN SUCCESS!");
-        return null;
+
+        return kakaoUserResponseDto;
     }
 
     private String getAccessToken(String code) throws JsonProcessingException {
@@ -116,15 +118,18 @@ public class KakaoUserService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
+
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
         String profileImage = jsonNode.get("properties").get("profile_image").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
 
         return KakaoUser.Response.builder()
                 .userId(id)
                 .nickname(nickname)
                 .profileImage(profileImage)
+                .email(email)
                 .build();
     }
 
@@ -146,9 +151,6 @@ public class KakaoUserService {
         Optional<User> kakaoUser = userMapper.findByUserEmail(kakaoEmail);
 
         if (!kakaoUser.isPresent()) {
-            // 회원가입
-            // username: random UUID
-            String username = "KAKAO" + UUID.randomUUID();
 
             // username: kakao nickname
             String nickname = kakaoUserDto.getNickname();
@@ -168,7 +170,7 @@ public class KakaoUserService {
             String userStatCd = "0010";
 
             kakaoUser = Optional.ofNullable(User.builder()
-                    .email(username)
+                    .email(kakaoEmail)
                     .userPwd(encodedPassword)
                     .userNm(nickname)
                     .userProfPhotoPath(profileImage)

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Optional;
 
 @Mapper
-public interface UserMapper {
+public interface KakaoUserMapper {
 
     @Select("SELECT * FROM user WHERE email = #{email}")
     Optional<User> findByUserEmail(@Param("email") String email);
