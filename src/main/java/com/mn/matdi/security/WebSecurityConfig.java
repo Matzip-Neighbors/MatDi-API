@@ -74,7 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers();
 
         http
-<<<<<<< HEAD
                 .cors()
                 .and()
                 .csrf()
@@ -96,14 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 그 외 어떤 요청이든 '인증'
                 .anyRequest()
                 .permitAll();
-=======
-            .authorizeRequests()
-            .anyRequest().permitAll()
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
->>>>>>> c3e6f70beb40c8571adcadf6a05a38ca1dba23ee
+
     }
 
 
@@ -130,15 +122,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
 
-<<<<<<< HEAD
-        // 회원 관리 API 허용
+        // 카카오회원 관리 API 허용
         skipPathList.add("GET,/api/user/kakao/callback");
         skipPathList.add("GET,/user/kakao/callback/{userId}");
-=======
-        skipPathList.add("POST,/users/**");
-        skipPathList.add("POST,/users/signup");
 
->>>>>>> c3e6f70beb40c8571adcadf6a05a38ca1dba23ee
         skipPathList.add("GET,/oauth/callback/kakao");
 
         // 회원 관리 API 허용
