@@ -1,4 +1,4 @@
-package com.mn.matdi.controller;
+package com.mn.matdi.service;
 
 import com.mn.matdi.dto.UserDto;
 import com.mn.matdi.mapper.UserMapper;
