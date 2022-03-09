@@ -47,20 +47,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
-
-// Jacoco
-jacoco {
-    toolVersion = "0.8.5"
-}
-
-jacocoTestReport {
-    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
-
-    reports {
-        xml.enabled = true // codecov depends on xml format report
-        html.enabled = true
-    }
 }
