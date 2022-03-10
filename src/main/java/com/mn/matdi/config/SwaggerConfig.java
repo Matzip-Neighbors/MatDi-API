@@ -1,9 +1,13 @@
 package com.mn.matdi.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.OAuthFlow;
+import io.swagger.v3.oas.annotations.security.OAuthFlows;
+import io.swagger.v3.oas.annotations.security.OAuthScope;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -15,6 +19,11 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(title = "MatDi API",
                 description = "MatDi API 명세서.",
                 version = "v1"))
+@SecurityScheme(name = "security_auth", type = SecuritySchemeType.OAUTH2,
+        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
+                authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}"
+                , tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",scopes = {
+                @OAuthScope(name = "IdentityPortal.API", description = "IdentityPortal.API")})))
 @Configuration
 @RequiredArgsConstructor
 public class SwaggerConfig {
@@ -24,20 +33,20 @@ public class SwaggerConfig {
         // /api/** 로 시작하는 API 들을 테스트 관련 API 로 그룹핑
         // member 로 시작하는 API 를 그룹핑 하고 싶다 라고 하면 메소드 이름을 변경하고 하나 더 만들어서 설정하면 됨
 
-//        String[] paths = {"/api/**"};
+        String[] paths = {"/api/**"};
 
         return GroupedOpenApi
                 .builder()
                 .group("MatDi")
-//                .pathsToMatch(paths)
+                .pathsToMatch(paths)
                 .addOpenApiCustomiser(buildSecurityOpenApi()).build();
     }
 
     public OpenApiCustomiser buildSecurityOpenApi() {
         // jwt token 을 한번 설정하면 header 에 값을 넣어주는 코드, 자세한건 아래에 추가적으로 설명할 예정
 
-        return OpenApi -> OpenApi.addSecurityItem(new SecurityRequirement().addList("jwt token"))
-                .getComponents().addSecuritySchemes("jwt token", new SecurityScheme()
+        return OpenApi -> OpenApi.addSecurityItem(new SecurityRequirement().addList("JWT_TOKEN"))
+                .getComponents().addSecuritySchemes("JWT_TOKEN", new SecurityScheme()
                         .name("Authorization")
                         .type(SecurityScheme.Type.HTTP)
                         .in(SecurityScheme.In.HEADER)
