@@ -54,13 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web
             .ignoring()
             .antMatchers(
-                            "**/swagger-resources/**",
-                            "/swagger-ui/**",
-                            "/webjars/**",
-                            "/swagger/**",
-                            "/swagger-ui.html",
-                            "/v3/api-docs/swagger-config",
-                            "/v3/api-docs/MatDi"
+                    "/swagger-ui/**",
+                    "/swagger-resources/**",
+                    "/v3/api-docs",
+                    "/v2/api-docs"
             );
 
     }
@@ -132,17 +129,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/user/**");
         skipPathList.add("POST,/user/signup");
 
-        // Image View 허용
-        skipPathList.add("GET,/images/**");
-        skipPathList.add("GET,/"); // 임시...
-
         // Swagger
         skipPathList.add("GET, /swagger-ui/**");
-        skipPathList.add("GET, /swagger/**");
-        skipPathList.add("GET, /webjars/**");
-        skipPathList.add("GET, /swagger-ui.html");
-        skipPathList.add("GET, /v3/api-docs/swagger-config");
-        skipPathList.add("GET, /v3/api-docs/MatDi API");
+        skipPathList.add("GET, /v3/api-docs");
+        skipPathList.add("GET, /v2/api-docs");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
