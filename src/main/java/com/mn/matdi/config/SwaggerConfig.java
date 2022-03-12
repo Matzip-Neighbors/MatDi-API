@@ -19,7 +19,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     private static final String API_NAME = "맛디";
     private static final String API_DESCRIPTION = "맛디 입니다.";
     private static final String API_VERSION = "1.0.0";
-    private static final String API_TERMS_OF_SERVICE_URL = "https://github.com/Team8-Project";
+    private static final String API_TERMS_OF_SERVICE_URL = "https://github.com/Matzip-Neighbors";
 
 
     @Bean
