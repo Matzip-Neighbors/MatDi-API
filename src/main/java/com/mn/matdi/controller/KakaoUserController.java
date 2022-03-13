@@ -23,7 +23,6 @@ public class KakaoUserController {
 
     private final KakaoUserService kakaoUserService;
 
-    @Operation(summary = "Kakao Login")
     @GetMapping("/api/user/kakao/callback")
     public ResponseEntity<KakaoUser.Response> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
 
