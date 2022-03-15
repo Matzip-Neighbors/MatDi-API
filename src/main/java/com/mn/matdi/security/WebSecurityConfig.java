@@ -56,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(
                     "/swagger-ui/**",
                     "/swagger-resources/**",
-                    "/v3/api-docs",
                     "/v2/api-docs"
             );
 
@@ -131,8 +130,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Swagger
         skipPathList.add("GET, /swagger-ui/**");
-        skipPathList.add("GET, /v3/api-docs");
-        skipPathList.add("GET, /v2/api-docs");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
