@@ -1,35 +1,30 @@
 package com.mn.matdi.config;
 
+import com.mn.matdi.controller.KakaoUserController;
+import com.mn.matdi.service.KakaoUserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+
+import static springfox.documentation.builders.RequestHandlerSelectors.withMethodAnnotation;
 
 
 @Configuration
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 
-    private static final String API_NAME = "맛디";
-    private static final String API_DESCRIPTION = "맛디 입니다.";
-    private static final String API_VERSION = "1.0.0";
-    private static final String API_TERMS_OF_SERVICE_URL = "https://github.com/Team8-Project";
-
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(AuthenticationPrincipal.class, KakaoUserController.class, KakaoUserService.class) //제외할 파라미터
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                // 스웨거가 RestController를 전부 스캔을 한다.
-                // basePackage => 어디를 범위로 스캔을 할 것인지 작성
-                .paths(PathSelectors.any())
+                    .apis(withMethodAnnotation(ApiOperation.class))
                 .build()
                 .apiInfo(apiInfo());
 
@@ -44,10 +39,10 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title(API_NAME)
-                .description(API_DESCRIPTION)
-                .version(API_VERSION)
-                .termsOfServiceUrl(API_TERMS_OF_SERVICE_URL)
+                .title("맛디")
+                .description("맛디 입니다.")
+                .version("1.0.0")
+                .termsOfServiceUrl("https://github.com/Matzip-Neighbors")
                 .build();
     }
 
