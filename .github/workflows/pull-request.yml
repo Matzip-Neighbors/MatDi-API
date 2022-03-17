@@ -9,10 +9,11 @@ on:
       - develop
   pull_request: # feature/*와 develop 브랜치에서 PR이 일어났을 때 github action 동작
     branches:
-      - 'develop'
+      - develop
+      - feature/*
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest # 실행 환경 지정
     steps:
       - uses: actions/checkout@v2 # github action 버전 지정(major version)
