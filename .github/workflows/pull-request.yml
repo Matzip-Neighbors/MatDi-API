@@ -24,10 +24,12 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        shell: bash
 
-      # 실제 application build(-x 옵션을 통해 test는 제외)
+      # 실제 application build
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew build
+        shell: bash
 
 #      # test application build
 #      - name: Test with Gradle
@@ -46,25 +48,17 @@ jobs:
 #        with:
 #          files: build/test-results/**/*.xml
 
-      # 전송할 파일을 담을 디렉토리 생성
-      - name: Make Directory for deliver
-        run: mkdir deploy
+        # 새로 추가 된 부분
+        - name: Make zip file
+          run: zip -r ./$GITHUB_SHA.zip .
+          shell: bash
 
-      # Jar 파일 Copy
-      - name: Copy Jar
-        run: cp ./build/libs/*.jar ./deploy/
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS-REGION: ${{ secrets.AWS_REGION }}
 
-      # 압축파일 형태로 전달
-      - name: Make zip file
-        run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
-
-      # S3 Bucket으로 copy
-      - name: Deliver to AWS S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp \
-          --region ap-northeast-2 \
-          --acl private \
-        ./matdi-deploy.zip s3://matdi-deploy/
+        - name: Upload to S3
+          run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
