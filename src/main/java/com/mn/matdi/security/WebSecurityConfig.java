@@ -9,7 +9,6 @@ import com.mn.matdi.security.provider.FormLoginAuthProvider;
 import com.mn.matdi.security.provider.JWTAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +23,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
@@ -66,15 +64,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers();
 
-        http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         /* 1.
          * UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter, JwtFilter 를 등록합니다.
@@ -118,15 +112,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
 
-        // 카카오회원 관리 API 허용
-        skipPathList.add("GET,/api/user/kakao/callback");
-        skipPathList.add("GET,/user/kakao/callback/{userId}");
-
-        skipPathList.add("GET,/oauth/callback/kakao");
-
         // 회원 관리 API 허용
-        skipPathList.add("GET,/user/**");
-        skipPathList.add("POST,/user/signup");
+        skipPathList.add("POST,/api/user"); // 로그인
+        skipPathList.add("GET,/api/user/**"); // 소셜로그인
+        skipPathList.add("POST,/api/signup"); // 회원가입
+        skipPathList.add("GET,/api/signup/**"); // 중복체크
 
         // Swagger
         skipPathList.add("GET, /swagger-ui/**");
