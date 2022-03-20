@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.matdi.mapper.UserMapper">
+    <insert id="insertUser" parameterType="String">
+        INSERT INTO user (email,user_pwd,user_nm,user_prof_photo_path,user_reg_tp_cd,user_stat_cd)
+        VALUES (
+                   #{email},
+                   #{userPwd},
+                   #{userNm},
+                   #{userProfPhotoPath},
+                   '0010',
+                   '0010'
+               );
+    </insert>
+    <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
+    <insert id="insertEmailVerificationInfo" parameterType="String">
+        INSERT INTO verification (email,vrf_no,vrf_tp_cd,vrf_stat_cd,expr_dtm)
+        VALUES (
+                #{email},
+                #{vrfNo},
+                #{vrfTpCd},
+                #{vrfStatCd},
+                NOW() + INTERVAL 1 HOUR
+                 )
+    </insert>
+
+    <!--이메일 인증번호 인증 -->
+    <select id="checkEmailVerificationInfo" parameterType="String" resultType="boolean">
+        SELECT IF(
+                       EXISTS(
+                               select *
+                               from verification
+                               where email = #{email}
+                                 and vrf_no = #{vrfNo}
+                                 and (expr_dtm > now())
+                           ),
+                       'true',
+                       'false'
+                   )
+
+    </select>
+
+    <!--이메일 인증이되면 상태코드 변경-->
+    <update id="updateEmailStat" parameterType="String">
+        UPDATE verification set vrf_stat_cd = '0020' where email = #{email}
+    </update>
+
+    <!-- 이메일 중복 체크 -->
+    <select id="emailDuplicationCheck" parameterType="String" resultType="Integer">
+        SELECT COUNT(*)
+        FROM user
+        where email = #{email}
+    </select>
+
+    <!-- 최종 회원가입시 이메일 인증되었는지 체크 -->
+    <select id="emailVerificationCodeCheck" parameterType="String" resultType="boolean">
+        SELECT IF(
+                       EXISTS(
+                               select *
+                               from verification
+                               where email = #{email}
+                               and vrf_stat_cd = '0020'
+                           ),
+                       'true',
+                       'false'
+                   )
+    </select>
+</mapper>
