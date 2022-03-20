@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class HeaderDto {
-    private String TOKEN;
-    private Long user_id;
-    private String user_nm;
+@AllArgsConstructor
+public class EmailVerificationNumberDto {
     private String email;
-    private String user_prof_photo_path;
+    private String vrfNo;
 }
-

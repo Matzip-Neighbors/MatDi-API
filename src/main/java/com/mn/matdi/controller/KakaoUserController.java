@@ -18,4 +18,5 @@ public class KakaoUserController {
         return ResponseEntity.ok()
                 .body(kakaoUserService.kakaoLogin(code));
     }
+
 }
