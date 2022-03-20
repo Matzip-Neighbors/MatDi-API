@@ -36,8 +36,9 @@ dependencies {
     // MariaDB
     implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
 
-    // Swagger(SpringDoc)
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.5.9'
+    // Swagger API
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

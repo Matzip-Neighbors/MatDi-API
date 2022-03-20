@@ -35,11 +35,12 @@ public class KakaoUserService {
 
     @Value("${kakao.client-id}")
     private String clientId;
+
     private String accessToken;
 
     public KakaoUser.Response kakaoLogin(String code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
-        String accessToken = getAccessToken(code);
+        accessToken = getAccessToken(code);
 
         // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUser.Response kakaoUserDto = getKakaoUserInfo(accessToken);
@@ -76,8 +77,8 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", clientId);
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
-//        body.add("redirect_uri", "http://localhost:3000/redirect/kakao");
+//        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/redirect/kakao");
         body.add("code", code);
 
         // HTTP 요청 보내기
