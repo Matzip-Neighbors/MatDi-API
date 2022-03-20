@@ -4,6 +4,8 @@ package com.mn.matdi.security;
 
 import com.mn.matdi.security.filter.FormLoginFilter;
 import com.mn.matdi.security.filter.JwtAuthFilter;
+import com.mn.matdi.security.filter.JwtAuthenticationFilter;
+import com.mn.matdi.security.filter.JwtTokenProvider;
 import com.mn.matdi.security.jwt.HeaderTokenExtractor;
 import com.mn.matdi.security.provider.FormLoginAuthProvider;
 import com.mn.matdi.security.provider.JWTAuthProvider;
@@ -31,6 +33,7 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
+    private final JwtTokenProvider jwtTokenProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
 
     // BCryptPasswordEncoder는 Spring Security에서 제공하는 비밀번호 암호화 객체
@@ -86,19 +89,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
          */
         http
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
                 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/api/user").permitAll()
+                .antMatchers("/api/emailVerificationNumber").permitAll()
+                .antMatchers("/api/emailVerificationNumber/check").permitAll()
                 // 그 외 어떤 요청이든 '인증'
                 .anyRequest()
                 .permitAll();
 
     }
-
-
 
     @Bean
     public FormLoginFilter formLoginFilter() throws Exception {
@@ -121,6 +125,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
+
+        //이메일 인증
+        skipPathList.add("POST,/api/emailVerificationNumber");
+        skipPathList.add("POST,/api/emailVerificationNumber/check");
 
         // 카카오회원 관리 API 허용
         skipPathList.add("GET,/api/user/kakao/callback");
