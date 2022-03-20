@@ -38,9 +38,9 @@ public class KakaoUserService {
 
     private String accessToken;
 
-    public KakaoUser.Response kakaoLogin(String code) throws JsonProcessingException {
+    public KakaoUser.Response kakaoLogin(KakaoUser.AuthCode code) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
-        accessToken = getAccessToken(code);
+        accessToken = getAccessToken(code.getCode());
 
         // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUser.Response kakaoUserDto = getKakaoUserInfo(accessToken);
