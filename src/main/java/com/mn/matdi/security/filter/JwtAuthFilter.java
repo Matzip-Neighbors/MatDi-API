@@ -3,6 +3,7 @@ package com.mn.matdi.security.filter;
 
 import com.mn.matdi.security.jwt.HeaderTokenExtractor;
 import com.mn.matdi.security.jwt.JwtPreProcessingToken;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -41,7 +42,6 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
         if (tokenPayload == null) {
             response.sendError(400, "유효하지 않은 토큰입니다.");
             return null;
-//            throw new IllegalArgumentException("로그인 정보가 없습니다.");
         }
 
         JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
