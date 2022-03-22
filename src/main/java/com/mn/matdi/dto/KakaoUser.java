@@ -7,11 +7,6 @@ import lombok.Getter;
 public class KakaoUser {
 
     @Getter
-    public static class AuthCode {
-        private String code;
-    }
-
-    @Getter
     @Builder
     @AllArgsConstructor
     public static class Response {

@@ -13,8 +13,8 @@ public class KakaoUserController {
 
     private final KakaoUserService kakaoUserService;
 
-    @PostMapping("/api/user/kakao/callback")
-    public ResponseEntity<KakaoUser.Response> kakaoLogin(@RequestBody KakaoUser.AuthCode code) throws JsonProcessingException {
+    @GetMapping("/api/user/kakao/callback")
+    public ResponseEntity<KakaoUser.Response> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         return ResponseEntity.ok()
                 .body(kakaoUserService.kakaoLogin(code));
     }
