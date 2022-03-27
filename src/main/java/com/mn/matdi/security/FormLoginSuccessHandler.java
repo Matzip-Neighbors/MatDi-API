@@ -7,6 +7,7 @@ import com.mn.matdi.security.jwt.JwtTokenUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
 
     private ObjectMapper mapper = new ObjectMapper();
 
+
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
                                         final Authentication authentication) throws IOException {
@@ -28,7 +30,9 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         response.addHeader(AUTH_HEADER, TOKEN_TYPE + " " + token);
 
         //UserId, Nickname 내려주기
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+
         User user = userDetails.getUser();
         LoginResponseDto responseDto = LoginResponseDto.builder()
                 .userId(user.getId())

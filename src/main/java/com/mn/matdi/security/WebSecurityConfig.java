@@ -1,10 +1,8 @@
 package com.mn.matdi.security;
 
 
-
 import com.mn.matdi.security.filter.FormLoginFilter;
 import com.mn.matdi.security.filter.JwtAuthFilter;
-import com.mn.matdi.security.filter.JwtAuthenticationFilter;
 import com.mn.matdi.security.filter.JwtTokenProvider;
 import com.mn.matdi.security.jwt.HeaderTokenExtractor;
 import com.mn.matdi.security.provider.FormLoginAuthProvider;
@@ -79,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
          */
         http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -130,7 +128,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 회원 관리 API 허용
         skipPathList.add("POST,/api/user"); // 로그인
-        skipPathList.add("GET,/api/user/**"); // 소셜로그인
+        skipPathList.add("POST,/api/user/**"); // 소셜로그인
         skipPathList.add("POST,/api/signup"); // 회원가입
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 

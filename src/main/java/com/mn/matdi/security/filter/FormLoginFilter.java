@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -30,8 +31,8 @@ public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
             String username = requestBody.get("username").asText();
             String password = requestBody.get("password").asText();
             authRequest = new UsernamePasswordAuthenticationToken(username, password); // 인증 객체 생성
-        } catch (Exception e) {
-            throw new RuntimeException("username, password 입력이 필요합니다. (JSON)");
+        } catch (IOException e) {
+            throw new RuntimeException( e + " username, password 입력이 필요합니다. (JSON)");
         }
 
         setDetails(request, authRequest);
