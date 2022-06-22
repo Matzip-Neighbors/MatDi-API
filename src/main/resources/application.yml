@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver  #h2 드라이버 설정
     url: jdbc:h2:~/test;  #접속 URL
-    username: EMC(zJDHU1kXsxfW5cbFROldhw==)  # 사용자 이름 (로그인 시 사용)
+    username: ENC(zJDHU1kXsxfW5cbFROldhw==)  # 사용자 이름 (로그인 시 사용)
     password: ENC(J+3cEW59L42IMjAQk4TIMg==)  # 사용자 암호 (로그인 시 사용)
 
   devtools:

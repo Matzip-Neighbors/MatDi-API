@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // CustomAuthenticationProvider()를 호출하기 위해서 Overriding
         auth
-//                .authenticationProvider(formLoginAuthProvider())
+                .authenticationProvider(formLoginAuthProvider())
                 .authenticationProvider(jwtAuthProvider);
     }
 
@@ -52,11 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
             .ignoring()
-            .antMatchers(
-                    "/swagger-ui/**",
-                    "/swagger-resources/**",
-                    "/v2/api-docs"
-            );
+            .antMatchers("/h2-console/**");
 
     }
 
@@ -65,11 +61,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authorizeRequests()
-                .antMatchers();
+                .antMatchers();;
 
+        http
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.headers().frameOptions().disable();
 
         /* 1.
          * UsernamePasswordAuthenticationFilter 이전에 FormLoginFilter, JwtFilter 를 등록합니다.
@@ -77,15 +79,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
          */
         http
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
                 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/api/user").permitAll()
-                .antMatchers("/api/emailVerificationNumber").permitAll()
-                .antMatchers("/api/emailVerificationNumber/check").permitAll()
                 // 그 외 어떤 요청이든 '인증'
                 .anyRequest()
                 .permitAll();
@@ -114,11 +113,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
 
-
-        //이메일 인증
-        skipPathList.add("POST,/api/emailVerificationNumber");
-        skipPathList.add("POST,/api/emailVerificationNumber/check");
-
         // 카카오회원 관리 API 허용
         skipPathList.add("GET,/api/user/kakao/callback");
         skipPathList.add("GET,/user/kakao/callback/{userId}");
@@ -133,7 +127,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 
         // Swagger
-        skipPathList.add("GET, /swagger-ui/**");
+        skipPathList.add("GET,/v2/api-docs");
+        skipPathList.add("GET,/swagger-resources");
+        skipPathList.add("GET,/configuration/ui");
+        skipPathList.add("GET,/configuration/security");
+        skipPathList.add("GET,/swagger-ui.html");
+        skipPathList.add("GET,/webjars/**");
+
+        skipPathList.add("GET,/v3/api-docs/**");
+        skipPathList.add("GET,/swagger-ui/**");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
