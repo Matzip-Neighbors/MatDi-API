@@ -20,10 +20,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
                 // basePackage => 어디를 범위로 스캔을 할 것인지 작성
-//                .apis(RequestHandlerSelectors.basePackage("mn.matdi"))
-                // 스웨거가 RestController를 전부 스캔을 한다.
+                .apis(RequestHandlerSelectors.basePackage("mn.matdi"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
