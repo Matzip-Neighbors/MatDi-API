@@ -1,12 +1,7 @@
 package com.mn.matdi.config;
 
-import com.mn.matdi.controller.KakaoUserController;
-import com.mn.matdi.service.KakaoUserService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -14,8 +9,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-
-import static springfox.documentation.builders.RequestHandlerSelectors.withMethodAnnotation;
 
 
 @Configuration
@@ -26,7 +19,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
 //                .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("Matdi API"))
+                .apis(RequestHandlerSelectors.basePackage("Matdi"))
                 // 스웨거가 RestController를 전부 스캔을 한다.
                 // basePackage => 어디를 범위로 스캔을 할 것인지 작성
                 .paths(PathSelectors.any())
