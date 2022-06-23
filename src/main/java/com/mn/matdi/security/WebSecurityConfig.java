@@ -9,6 +9,7 @@ import com.mn.matdi.security.provider.FormLoginAuthProvider;
 import com.mn.matdi.security.provider.JWTAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.ArrayList;
 import java.util.List;
 
+@Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
@@ -51,13 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-            .ignoring()
-            .antMatchers("/h2-console/**");
+                .ignoring()
+                .antMatchers("/h2-console/**");
 
     }
 
-     /*HttpSecurity 를 사용하면 선택 일치를 기반으로 리소스 수준에서 웹 기반 보안을 구성
-     WebSecurity에 접근 허용 설정을 해버리면 이 설정이 적용되지 않는다.*/
+    /*HttpSecurity 를 사용하면 선택 일치를 기반으로 리소스 수준에서 웹 기반 보안을 구성
+    WebSecurity에 접근 허용 설정을 해버리면 이 설정이 적용되지 않는다.*/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
