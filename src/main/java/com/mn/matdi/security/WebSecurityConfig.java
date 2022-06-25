@@ -51,13 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-            .ignoring()
-            .antMatchers("/h2-console/**");
+                .ignoring()
+                .antMatchers("/h2-console/**");
 
     }
 
-     /*HttpSecurity 를 사용하면 선택 일치를 기반으로 리소스 수준에서 웹 기반 보안을 구성
-     WebSecurity에 접근 허용 설정을 해버리면 이 설정이 적용되지 않는다.*/
+    /*HttpSecurity 를 사용하면 선택 일치를 기반으로 리소스 수준에서 웹 기반 보안을 구성
+    WebSecurity에 접근 허용 설정을 해버리면 이 설정이 적용되지 않는다.*/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -126,14 +126,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("POST,/api/signup"); // 회원가입
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 
-        // Swagger
+        // Swagger version2
         skipPathList.add("GET,/v2/api-docs");
         skipPathList.add("GET,/swagger-resources");
         skipPathList.add("GET,/configuration/ui");
         skipPathList.add("GET,/configuration/security");
         skipPathList.add("GET,/swagger-ui.html");
         skipPathList.add("GET,/webjars/**");
+        skipPathList.add("GET,/swagger-resources/**");
 
+        // Swagger version3
         skipPathList.add("GET,/v3/api-docs/**");
         skipPathList.add("GET,/swagger-ui/**");
 
