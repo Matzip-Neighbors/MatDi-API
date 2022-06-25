@@ -126,14 +126,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("POST,/api/signup"); // 회원가입
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 
-        // Swagger
+        // Swagger version2
         skipPathList.add("GET,/v2/api-docs");
         skipPathList.add("GET,/swagger-resources");
         skipPathList.add("GET,/configuration/ui");
         skipPathList.add("GET,/configuration/security");
         skipPathList.add("GET,/swagger-ui.html");
         skipPathList.add("GET,/webjars/**");
+        skipPathList.add("GET,/swagger-resources/**");
 
+        // Swagger version3
         skipPathList.add("GET,/v3/api-docs/**");
         skipPathList.add("GET,/swagger-ui/**");
 

@@ -38,8 +38,7 @@ dependencies {
     implementation'org.mariadb.jdbc:mariadb-java-client:3.0.5'
 
     // Swagger API
-    implementation 'io.springfox:springfox-swagger2:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
