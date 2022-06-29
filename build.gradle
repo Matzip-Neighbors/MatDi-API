@@ -52,6 +52,11 @@ dependencies {
 
     // Jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
+    // Oauth2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    implementation 'com.h2database:h2'
 }
 
 test {
