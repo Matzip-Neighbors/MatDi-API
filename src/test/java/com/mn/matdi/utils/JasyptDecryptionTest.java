@@ -19,7 +19,7 @@ public class JasyptDecryptionTest {
 
     @Test
     void encrypt() {
-        String result = jasypt.encrypt("test");
+        String result = jasypt.encrypt("1234");
         System.out.println(result);
     }
 
