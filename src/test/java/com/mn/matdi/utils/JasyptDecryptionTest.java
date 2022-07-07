@@ -19,7 +19,7 @@ public class JasyptDecryptionTest {
 
     @Test
     void encrypt() {
-        String result = jasypt.encrypt("jdbc:mariadb://matdi-dev.cf69dnr1ovqf.ap-northeast-2.rds.amazonaws.com:3306/matdi");
+        String result = jasypt.encrypt("1234");
         System.out.println(result);
     }
 
