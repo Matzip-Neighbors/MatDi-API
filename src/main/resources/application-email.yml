@@ -1,9 +1,9 @@
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: SMTP용 google 계정
-    password: SMTP용 google 계정 비밀번호
+    host: smtp.naver.com
+    port: 465
+    username: ENC(3CwulSSL5Im68Bi4y2S8XN92dvSgi3L8)
+    password: ENC(s//SJX7k+7a+utjhuKaV9KXYEKrwYuAy)
     properties:
       mail:
         smtp:
