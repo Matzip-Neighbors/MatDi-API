@@ -5,3 +5,4 @@ spring:
       - optional:classpath:/application-jasypt.yml
       - optional:classpath:/application-oauth.yml
       - optional:classpath:/application-swagger.yml
+      - optional:classpath:/application-email.yml
