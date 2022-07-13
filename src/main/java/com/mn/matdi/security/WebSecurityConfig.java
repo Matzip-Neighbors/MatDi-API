@@ -138,6 +138,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/v3/api-docs/**");
         skipPathList.add("GET,/swagger-ui/**");
 
+
+        // Email 인증
+        skipPathList.add("POST,/api/emailVerificationNumber");
+        skipPathList.add("POST,/api/emailVerificationNumber/check");
+
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
                 "/**"
