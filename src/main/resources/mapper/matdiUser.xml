@@ -14,9 +14,10 @@
                );
     </insert>
     <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
-    <insert id="insertEmailVerificationInfo" parameterType="String">
-        INSERT INTO verification (email,vrf_no,vrf_tp_cd,vrf_stat_cd,expr_dtm)
+    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.EmailRequestDto">
+        INSERT INTO verification (vrf_id,email,vrf_no,vrf_tp_cd,vrf_stat_cd,expr_dtm)
         VALUES (
+                #{id},
                 #{email},
                 #{vrfNo},
                 #{vrfTpCd},

@@ -5,32 +5,37 @@ import com.mn.matdi.dto.EmailVerificationNumberDto;
 import com.mn.matdi.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Slf4j
 @Service
+@EnableAsync
 @RequiredArgsConstructor
 public class EmailSenderService {
 
-    private final JavaMailSender mailSender;
+    private final JavaMailSender javaMailSender;
     private final UserMapper userMapper;
     private static final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
 
     @Value("${spring.mail.username}")
     private String username;
 
+    @Async
     public String sendEmail(EmailRequestDto.request emailRequestDto) {
         Random random = new Random();
         int authenticationRandomNumber = random.nextInt(888888) + 111111;
         log.info("randomNumber ={}", authenticationRandomNumber);
 
         String fromMail = username;
+        System.out.println(emailRequestDto.getEmail());
         String toMail = emailRequestDto.getEmail();
         String title = "회원가입 인증 이메일 입니다.";
         String content =
@@ -41,6 +46,7 @@ public class EmailSenderService {
                         "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 
         EmailRequestDto.request emailRequestDto1 = EmailRequestDto.request.builder()
+                .id(1L)
                 .email(toMail)
                 .vrfNo(Integer.toString(authenticationRandomNumber))
                 .vrfStatCd("0010")
@@ -52,13 +58,13 @@ public class EmailSenderService {
 
         /** 이메일 전송을 위한 코드 **/
         try {
-            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
             helper.setFrom(fromMail);
             helper.setTo(toMail);
             helper.setSubject(title);
             helper.setText(content,true);
-            mailSender.send(message);
+            javaMailSender.send(message);
         }catch(Exception e) {
             e.printStackTrace();
         }

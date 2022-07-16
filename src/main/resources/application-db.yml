@@ -1,15 +1,28 @@
 spring:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: ENC(d9iJ+2Jh9ZEs9/YusjlK4mJJ/24LZ//M9HlJxCOBoK2cOA4vXJgPBZZXMF5KCqAgwcgg5+FZ5XxvO2G2tbCoGEIDT+RnOsEtXE7IJOX198bII7ZkOn0au4l/bLVuwYl8)
-    username: ENC(05YNRyPs0WNUjs7uns8d9w==)
-    password: ENC(L9CnTseQNs6ikvR+CDnyn0R/gVw0z4Wu)
+    mariadb:
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: ENC(d9iJ+2Jh9ZEs9/YusjlK4mJJ/24LZ//M9HlJxCOBoK2cOA4vXJgPBZZXMF5KCqAgwcgg5+FZ5XxvO2G2tbCoGEIDT+RnOsEtXE7IJOX198bII7ZkOn0au4l/bLVuwYl8)
+      username: ENC(05YNRyPs0WNUjs7uns8d9w==)
+      password: ENC(L9CnTseQNs6ikvR+CDnyn0R/gVw0z4Wu)
+
+    h2:
+      driver-class-name: org.h2.Driver  #h2 드라이버 설정
+      url: jdbc:h2:~/test  #접속 URL
+      username: ENC(zJDHU1kXsxfW5cbFROldhw==) # 사용자 이름 (로그인 시 사용)
+      password: ENC(YCpqImgdltL2qKQ/R62LPg==) # 사용자
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   devtools:
     livereload:
       enabled: true
   freemarker:
     cache: false
+
 
 
 mybatis:
