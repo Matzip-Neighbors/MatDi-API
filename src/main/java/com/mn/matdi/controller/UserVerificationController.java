@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class UserVerificationController {
 
     @Operation(summary = "이메일 인증번호 요청")
     @PostMapping("/api/emailVerificationNumber")
-    public String mailSendNumber(@RequestBody EmailRequestDto.request request) {
+    public String mailSendNumber(@RequestBody EmailRequestDto.request request) throws MessagingException {
         return emailSenderService.sendEmail(request);
     }
 

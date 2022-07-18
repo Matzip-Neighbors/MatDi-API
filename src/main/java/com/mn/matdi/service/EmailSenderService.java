@@ -12,12 +12,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 @Slf4j
 @Service
-@EnableAsync
 @RequiredArgsConstructor
 public class EmailSenderService {
 
@@ -29,7 +29,7 @@ public class EmailSenderService {
     private String username;
 
     @Async
-    public String sendEmail(EmailRequestDto.request emailRequestDto) {
+    public String sendEmail(EmailRequestDto.request emailRequestDto) throws MessagingException {
         Random random = new Random();
         int authenticationRandomNumber = random.nextInt(888888) + 111111;
         log.info("randomNumber ={}", authenticationRandomNumber);
@@ -56,18 +56,13 @@ public class EmailSenderService {
         userMapper.insertEmailVerificationInfo(emailRequestDto1);
 
 
-        /** 이메일 전송을 위한 코드 **/
-        try {
-            MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-            helper.setFrom(fromMail);
-            helper.setTo(toMail);
-            helper.setSubject(title);
-            helper.setText(content,true);
-            javaMailSender.send(message);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+        helper.setFrom(fromMail);
+        helper.setTo(toMail);
+        helper.setSubject(title);
+        helper.setText(content,true);
+        javaMailSender.send(message);
 
         return Integer.toString(authenticationRandomNumber);
     }

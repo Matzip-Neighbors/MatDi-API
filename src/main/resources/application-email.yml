@@ -1,11 +1,14 @@
 spring:
   mail:
-    host: smtp.naver.com
-    port: 465
-    username: ENC(3CwulSSL5Im68Bi4y2S8XN92dvSgi3L8)
-    password: ENC(s//SJX7k+7a+utjhuKaV9KXYEKrwYuAy)
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    protocol: smtp
     properties:
       mail:
+        debug: true
+        transport:
         smtp:
           starttls:
             enable: true
@@ -14,6 +17,3 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-          ssl:
-            enable: true
-            trust: smtp.naver.com
