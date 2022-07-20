@@ -17,3 +17,8 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+          ssl:
+            enable: true
+            trust: smtp.gmail.com
+
+
