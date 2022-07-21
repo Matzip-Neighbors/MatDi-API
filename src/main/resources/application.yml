@@ -1,11 +1,4 @@
 spring:
-  config:
-    import:
-      - optional:classpath:/application-db.yml
-      - optional:classpath:/application-jasypt.yml
-      - optional:classpath:/application-oauth.yml
-      - optional:classpath:/application-swagger.yml
-      - optional:classpath:/application-email.yml
 
   # DB 설정
   datasource:
