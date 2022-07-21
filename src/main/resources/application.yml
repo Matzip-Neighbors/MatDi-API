@@ -13,8 +13,6 @@ spring:
       url: jdbc:h2:~/test  #접속 URL
       username: ENC(zJDHU1kXsxfW5cbFROldhw==) # 사용자 이름 (로그인 시 사용)
       password: ENC(YCpqImgdltL2qKQ/R62LPg==) # 사용자
-
-    h2:
       console:
         enabled: true
         path: /h2-console
