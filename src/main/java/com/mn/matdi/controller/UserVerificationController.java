@@ -1,7 +1,8 @@
 package com.mn.matdi.controller;
 
-import com.mn.matdi.dto.EmailRequestDto;
 import com.mn.matdi.dto.EmailVerificationNumberDto;
+import com.mn.matdi.dto.EmailVerifyRequestDto;
+import com.mn.matdi.dto.EmailVerifyResponseDto;
 import com.mn.matdi.service.EmailSenderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class UserVerificationController {
 
     @Operation(summary = "이메일 인증번호 요청")
     @PostMapping("/api/emailVerificationNumber")
-    public String mailSendNumber(@RequestBody EmailRequestDto.request request) throws MessagingException {
-        return emailSenderService.sendEmail(request);
+    public EmailVerifyResponseDto mailSendNumber(@RequestBody EmailVerifyRequestDto emailVerifyRequestDto) throws MessagingException {
+        return emailSenderService.sendVerifyEmailToUser(emailVerifyRequestDto);
     }
 
     @Operation(summary = "이메일 인증번호 검증")

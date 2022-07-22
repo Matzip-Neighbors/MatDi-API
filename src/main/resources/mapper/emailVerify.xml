@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mn.matdi.mapper.UserMapper">
-    <insert id="insertUser" parameterType="String">
-        INSERT INTO user (email,user_pwd,user_nm,user_prof_photo_path,user_reg_tp_cd,user_stat_cd)
-        VALUES (
-                   #{email},
-                   #{userPwd},
-                   #{userNm},
-                   #{userProfPhotoPath},
-                   '0010',
-                   '0010'
-               );
-    </insert>
+<mapper namespace="com.mn.matdi.mapper.EmailVerify">
     <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
-    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.EmailRequestDto">
+    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.EmailVerifyResponseDto">
         INSERT INTO verification (vrf_id,email,vrf_no,vrf_tp_cd,vrf_stat_cd,expr_dtm)
         VALUES (
-                #{id},
-                #{email},
-                #{vrfNo},
-                #{vrfTpCd},
-                #{vrfStatCd},
-                NOW() + INTERVAL 1 HOUR
-                 )
+                   #{id},
+                   #{email},
+                   #{vrfNo},
+                   #{vrfTpCd},
+                   #{vrfStatCd},
+                   NOW() + INTERVAL 1 HOUR
+               )
     </insert>
 
     <!--이메일 인증번호 인증 -->
@@ -61,7 +50,7 @@
                                select *
                                from verification
                                where email = #{email}
-                               and vrf_stat_cd = '0020'
+                                 and vrf_stat_cd = '0020'
                            ),
                        'true',
                        'false'

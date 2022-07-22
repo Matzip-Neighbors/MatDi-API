@@ -1,7 +1,9 @@
 package com.mn.matdi.service;
 
-import com.mn.matdi.dto.EmailRequestDto;
 import com.mn.matdi.dto.EmailVerificationNumberDto;
+import com.mn.matdi.dto.EmailVerifyRequestDto;
+import com.mn.matdi.dto.EmailVerifyResponseDto;
+import com.mn.matdi.mapper.EmailVerify;
 import com.mn.matdi.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,38 +23,36 @@ import java.util.Random;
 public class EmailSenderService {
 
     private final JavaMailSender javaMailSender;
-    private final UserMapper userMapper;
-    private static final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
+    private final EmailVerify emailVerify;
+    private final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
 
     @Value("${spring.mail.username}")
     private String username;
 
     @Async
-    public String sendEmail(EmailRequestDto.request emailRequestDto) throws MessagingException {
+    public EmailVerifyResponseDto sendVerifyEmailToUser(EmailVerifyRequestDto emailVerifyRequestDto) throws MessagingException {
         Random random = new Random();
-        int authenticationRandomNumber = random.nextInt(888888) + 111111;
-        log.info("randomNumber ={}", authenticationRandomNumber);
+        int emailVerifyNumber = random.nextInt(888888) + 111111;
 
         String fromMail = username;
-        System.out.println(emailRequestDto.getEmail());
-        String toMail = emailRequestDto.getEmail();
+        String toMail = emailVerifyRequestDto.getEmail();
         String title = "회원가입 인증 이메일 입니다.";
         String content =
                 "홈페이지를 방문해주셔서 감사합니다." +
                         "<br><br>" +
-                        "인증 번호는 " + authenticationRandomNumber + "입니다." +
+                        "인증 번호는 " + emailVerifyNumber + "입니다." +
                         "<br>" +
                         "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 
-        EmailRequestDto.request emailRequestDto1 = EmailRequestDto.request.builder()
+        EmailVerifyResponseDto emailVerifyResponseDto = EmailVerifyResponseDto.builder()
                 .id(1L)
                 .email(toMail)
-                .vrfNo(Integer.toString(authenticationRandomNumber))
-                .vrfStatCd("0010")
-                .vrfTpCd("0010")
+                .vrfNo(Integer.toString(emailVerifyNumber))
+                .vrfStatCd("0010")  // 인증유형코드 (이메일: 0010, 문자: 0020)
+                .vrfTpCd("0010")    // 인증상태코드 (미인증: 0010, 인증: 0020, 인증실패: 0030)
                 .build();
 
-        userMapper.insertEmailVerificationInfo(emailRequestDto1);
+        emailVerify.insertEmailVerificationInfo(emailVerifyResponseDto);
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
@@ -62,12 +62,12 @@ public class EmailSenderService {
         helper.setText(content,true);
         javaMailSender.send(message);
 
-        return Integer.toString(authenticationRandomNumber);
+        return emailVerifyResponseDto;
     }
 
     public boolean verificationEmailNumber(EmailVerificationNumberDto emailVerificationNumberDto) {
-         if (userMapper.checkEmailVerificationInfo(emailVerificationNumberDto)) {
-             userMapper.updateEmailStat(emailVerificationNumberDto);
+         if (emailVerify.checkEmailVerificationInfo(emailVerificationNumberDto)) {
+             emailVerify.updateEmailStat(emailVerificationNumberDto);
              return true;
          }
          return false;
