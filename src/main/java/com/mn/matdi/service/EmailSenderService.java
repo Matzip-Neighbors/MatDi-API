@@ -4,7 +4,6 @@ import com.mn.matdi.dto.EmailVerificationNumberDto;
 import com.mn.matdi.dto.EmailVerifyRequestDto;
 import com.mn.matdi.dto.EmailVerifyResponseDto;
 import com.mn.matdi.mapper.EmailVerify;
-import com.mn.matdi.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +29,7 @@ public class EmailSenderService {
     private String username;
 
     @Async
-    public EmailVerifyResponseDto sendVerifyEmailToUser(EmailVerifyRequestDto emailVerifyRequestDto) throws MessagingException {
+    public EmailVerifyResponseDto sendUserVerificationNumber(EmailVerifyRequestDto emailVerifyRequestDto) throws MessagingException {
         Random random = new Random();
         int emailVerifyNumber = random.nextInt(888888) + 111111;
 
