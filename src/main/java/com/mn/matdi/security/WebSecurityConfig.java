@@ -122,7 +122,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 회원 관리 API 허용
         skipPathList.add("POST,/api/user"); // 로그인
         skipPathList.add("POST,/api/user/**"); // 소셜로그인
-        skipPathList.add("POST,/api/signup"); // 회원가입
+        skipPathList.add("POST,/api/user/signup"); // 회원가입
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 
         // Swagger version2

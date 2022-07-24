@@ -16,7 +16,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailSenderService {
@@ -28,8 +27,9 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String username;
 
-    @Async
-    public EmailVerifyResponseDto sendUserVerificationNumber(EmailVerifyRequestDto emailVerifyRequestDto) throws MessagingException {
+    public EmailVerifyResponseDto sendUserVerificationNumber(
+            EmailVerifyRequestDto emailVerifyRequestDto
+    ) throws MessagingException {
         Random random = new Random();
         int emailVerifyNumber = random.nextInt(888888) + 111111;
 
@@ -44,7 +44,6 @@ public class EmailSenderService {
                         "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 
         EmailVerifyResponseDto emailVerifyResponseDto = EmailVerifyResponseDto.builder()
-                .id(1L)
                 .email(toMail)
                 .vrfNo(Integer.toString(emailVerifyNumber))
                 .vrfStatCd("0010")  // 인증유형코드 (이메일: 0010, 문자: 0020)
@@ -64,7 +63,9 @@ public class EmailSenderService {
         return emailVerifyResponseDto;
     }
 
-    public boolean verificationEmailNumber(EmailVerificationNumberDto emailVerificationNumberDto) {
+    public boolean verificationEmailNumber(
+            EmailVerificationNumberDto emailVerificationNumberDto
+    ) {
          if (emailVerify.checkEmailVerificationInfo(emailVerificationNumberDto)) {
              emailVerify.updateEmailStat(emailVerificationNumberDto);
              return true;

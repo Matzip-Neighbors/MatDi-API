@@ -2,30 +2,28 @@ spring:
 
   # DB 설정
   datasource:
-    mariadb:
-      driver-class-name: org.mariadb.jdbc.Driver
-      url: ENC(d9iJ+2Jh9ZEs9/YusjlK4mJJ/24LZ//M9HlJxCOBoK2cOA4vXJgPBZZXMF5KCqAgwcgg5+FZ5XxvO2G2tbCoGEIDT+RnOsEtXE7IJOX198bII7ZkOn0au4l/bLVuwYl8)
-      username: ENC(05YNRyPs0WNUjs7uns8d9w==)
-      password: ENC(L9CnTseQNs6ikvR+CDnyn0R/gVw0z4Wu)
+#    mariadb:
+#      driver-class-name: org.mariadb.jdbc.Driver
+#      jdbc-url: ENC(d9iJ+2Jh9ZEs9/YusjlK4mJJ/24LZ//M9HlJxCOBoK2cOA4vXJgPBZZXMF5KCqAgwcgg5+FZ5XxvO2G2tbCoGEIDT+RnOsEtXE7IJOX198bII7ZkOn0au4l/bLVuwYl8)
+#      username: ENC(05YNRyPs0WNUjs7uns8d9w==)
+#      password: ENC(L9CnTseQNs6ikvR+CDnyn0R/gVw0z4Wu)
 
-    h2:
-      driver-class-name: org.h2.Driver  #h2 드라이버 설정
-      url: jdbc:h2:~/test  #접속 URL
-      username: ENC(zJDHU1kXsxfW5cbFROldhw==) # 사용자 이름 (로그인 시 사용)
-      password: ENC(YCpqImgdltL2qKQ/R62LPg==) # 사용자
-      console:
-        enabled: true
-        path: /h2-console
 
-    devtools:
-      livereload:
-        enabled: true
-    freemarker:
-      cache: false
+    driver-class-name: org.h2.Driver  #h2 드라이버 설정
+    url: jdbc:h2:~/test  #접속 URL
+    username: ENC(zJDHU1kXsxfW5cbFROldhw==) # 사용자 이름 (로그인 시 사용)
+    password: ENC(YCpqImgdltL2qKQ/R62LPg==) # 사용자
 
-  # 마이바티스 설정
-  mybatis:
-    mapper-locations: mapper/*.xml
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  devtools:
+    livereload:
+      enabled: true
+  freemarker:
+    cache: false
 
   # 이메일 인증
   mail:
@@ -64,3 +62,7 @@ jasypt:
 kakao:
   client-id: ENC(9xO48MdiIscs7LfmQ2WKq7oVEDTPlAjFuhLyS6/jbOkowZ08LFbvvB4O28nFdTvS)
   redirect-uri: ENC(KqZ+WOF1JVUjCyffaQKIRYeoNT/R0YefTmnoWsF/GllxGqK+KbeEumtHHMci+9nE)
+
+# 마이바티스 설정
+mybatis:
+  mapper-locations: mapper/*.xml
