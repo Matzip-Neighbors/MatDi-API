@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers();;
+                .antMatchers();
 
         http
                 .cors()
@@ -122,7 +122,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 회원 관리 API 허용
         skipPathList.add("POST,/api/user"); // 로그인
         skipPathList.add("POST,/api/user/**"); // 소셜로그인
-        skipPathList.add("POST,/api/signup"); // 회원가입
+        skipPathList.add("POST,/api/user/signup"); // 회원가입
         skipPathList.add("GET,/api/signup/**"); // 중복체크
 
         // Swagger version2
@@ -137,6 +137,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Swagger version3
         skipPathList.add("GET,/v3/api-docs/**");
         skipPathList.add("GET,/swagger-ui/**");
+
+
+        // Email 인증
+        skipPathList.add("POST,/api/emailVerificationNumber");
+        skipPathList.add("POST,/api/emailVerificationNumber/check");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,

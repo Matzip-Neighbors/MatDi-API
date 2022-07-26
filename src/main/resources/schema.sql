@@ -99,7 +99,7 @@ CREATE TABLE `like` (
 DROP TABLE IF EXISTS `verification`;
 
 CREATE TABLE `verification` (
-                                `vrf_id`	INT(11)	NOT NULL,
+                                `vrf_id`	INT(11)	NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `email`	VARCHAR(200)	NOT NULL,
                                 `vrf_no`	VARCHAR(6)	NOT NULL,
                                 `vrf_tp_cd`	VARCHAR(5)	NOT NULL	COMMENT '-이메일 0010
