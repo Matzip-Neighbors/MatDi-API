@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mn.matdi.mapper.EmailVerify">
     <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
-    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.EmailVerifyResponseDto"
+    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.email.EmailVerifyResponseDto"
                                                             useGeneratedKeys="true" keyProperty="vrf_id">
         INSERT INTO verification (
             email,

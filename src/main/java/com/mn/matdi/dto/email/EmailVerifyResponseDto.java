@@ -1,4 +1,4 @@
-package com.mn.matdi.dto;
+package com.mn.matdi.dto.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

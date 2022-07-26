@@ -1,7 +1,7 @@
 package com.mn.matdi.mapper;
 
-import com.mn.matdi.dto.EmailVerificationNumberDto;
-import com.mn.matdi.dto.EmailVerifyResponseDto;
+import com.mn.matdi.dto.email.EmailVerificationNumberDto;
+import com.mn.matdi.dto.email.EmailVerifyResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

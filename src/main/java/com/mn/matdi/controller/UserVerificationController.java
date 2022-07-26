@@ -1,8 +1,8 @@
 package com.mn.matdi.controller;
 
-import com.mn.matdi.dto.EmailVerificationNumberDto;
-import com.mn.matdi.dto.EmailVerifyRequestDto;
-import com.mn.matdi.dto.EmailVerifyResponseDto;
+import com.mn.matdi.dto.email.EmailVerificationNumberDto;
+import com.mn.matdi.dto.email.EmailVerifyRequestDto;
+import com.mn.matdi.dto.email.EmailVerifyResponseDto;
 import com.mn.matdi.service.EmailSenderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

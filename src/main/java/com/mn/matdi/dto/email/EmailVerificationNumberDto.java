@@ -1,14 +1,15 @@
-package com.mn.matdi.dto;
+package com.mn.matdi.dto.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class UserSignUpResponseDto {
+@AllArgsConstructor
+public class EmailVerificationNumberDto {
     private String email;
-    private String userNm;
-    private String userProfPhotoPath;
+    private String vrfNo;
 }

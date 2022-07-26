@@ -1,6 +1,6 @@
 package com.mn.matdi.controller;
 
-import com.mn.matdi.dto.UserSignUpRequestDto;
+import com.mn.matdi.dto.user.UserSignUpRequestDto;
 import com.mn.matdi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

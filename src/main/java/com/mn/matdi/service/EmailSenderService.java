@@ -1,15 +1,13 @@
 package com.mn.matdi.service;
 
-import com.mn.matdi.dto.EmailVerificationNumberDto;
-import com.mn.matdi.dto.EmailVerifyRequestDto;
-import com.mn.matdi.dto.EmailVerifyResponseDto;
+import com.mn.matdi.dto.email.EmailVerificationNumberDto;
+import com.mn.matdi.dto.email.EmailVerifyRequestDto;
+import com.mn.matdi.dto.email.EmailVerifyResponseDto;
 import com.mn.matdi.mapper.EmailVerify;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;

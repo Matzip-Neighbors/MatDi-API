@@ -1,7 +1,6 @@
 package com.mn.matdi.service;
 
-import com.mn.matdi.dto.UserSignUpRequestDto;
-import com.mn.matdi.mapper.EmailVerify;
+import com.mn.matdi.dto.user.UserSignUpRequestDto;
 import com.mn.matdi.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
