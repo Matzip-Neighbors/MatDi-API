@@ -1,4 +1,4 @@
-package com.mn.matdi.model;
+package com.mn.matdi.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

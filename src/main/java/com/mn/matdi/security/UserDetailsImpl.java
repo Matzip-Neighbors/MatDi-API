@@ -1,7 +1,7 @@
 package com.mn.matdi.security;
 
 
-import com.mn.matdi.model.User;
+import com.mn.matdi.dto.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

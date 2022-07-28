@@ -1,7 +1,7 @@
 package com.mn.matdi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mn.matdi.dto.KakaoUser;
+import com.mn.matdi.dto.kakao.KakaoUser;
 import com.mn.matdi.service.KakaoUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
