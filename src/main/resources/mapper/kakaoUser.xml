@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mn.matdi.mapper.KakaoUserMapper">
 
-    <insert id="insertKakaoUser" parameterType="com.mn.matdi.entity.User">
+    <insert id="insertKakaoUser" parameterType="com.mn.matdi.model.User">
         insert into user (email, user_pwd, user_nm, user_prof_photo_path, user_reg_tp_cd, user_stat_cd)
         values (#{email}, #{userPwd}, #{userNm}, #{userProfPhotoPath}, #{userRegTpCd}, #{userStatCd})
     </insert>

@@ -1,4 +1,4 @@
-package com.mn.matdi.entity;
+package com.mn.matdi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
