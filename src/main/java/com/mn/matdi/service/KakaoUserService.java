@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mn.matdi.dto.KakaoUser;
-import com.mn.matdi.entity.User;
+import com.mn.matdi.model.User;
 import com.mn.matdi.mapper.KakaoUserMapper;
 import com.mn.matdi.security.jwt.JwtTokenUtils;
 import com.mn.matdi.security.UserDetailsImpl;

@@ -1,6 +1,6 @@
 package com.mn.matdi.security;
 
-import com.mn.matdi.entity.User;
+import com.mn.matdi.model.User;
 import com.mn.matdi.mapper.KakaoUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

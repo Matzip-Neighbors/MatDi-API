@@ -1,6 +1,6 @@
 package com.mn.matdi.security.provider;
 
-import com.mn.matdi.entity.User;
+import com.mn.matdi.model.User;
 import com.mn.matdi.mapper.KakaoUserMapper;
 import com.mn.matdi.security.UserDetailsImpl;
 import com.mn.matdi.security.jwt.JwtDecoder;
