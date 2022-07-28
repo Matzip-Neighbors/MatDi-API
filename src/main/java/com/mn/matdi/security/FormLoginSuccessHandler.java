@@ -2,12 +2,11 @@ package com.mn.matdi.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mn.matdi.dto.LoginResponseDto;
-import com.mn.matdi.entity.User;
+import com.mn.matdi.model.User;
 import com.mn.matdi.security.jwt.JwtTokenUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.mn.matdi.mapper;
 
-import com.mn.matdi.entity.User;
+import com.mn.matdi.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
