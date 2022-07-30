@@ -1,8 +1,8 @@
 package com.mn.matdi.service;
 
-import com.mn.matdi.dto.email.EmailVerificationNumberDto;
-import com.mn.matdi.dto.email.EmailVerifyRequestDto;
-import com.mn.matdi.dto.email.EmailVerifyResponseDto;
+import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
+import com.mn.matdi.dto.userVerification.UserVerificationRequestDto;
+import com.mn.matdi.dto.userVerification.UserVerificationResponseDto;
 import com.mn.matdi.mapper.EmailVerify;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +25,8 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String username;
 
-    public EmailVerifyResponseDto sendUserVerificationNumber(
-            EmailVerifyRequestDto emailVerifyRequestDto
+    public UserVerificationResponseDto sendUserVerificationNumber(
+            UserVerificationRequestDto emailVerifyRequestDto
     ) throws MessagingException {
         Random random = new Random();
         int emailVerifyNumber = random.nextInt(888888) + 111111;
@@ -41,7 +41,7 @@ public class EmailSenderService {
                         "<br>" +
                         "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 
-        EmailVerifyResponseDto emailVerifyResponseDto = EmailVerifyResponseDto.builder()
+        UserVerificationResponseDto emailVerifyResponseDto = UserVerificationResponseDto.builder()
                 .email(toMail)
                 .vrfNo(Integer.toString(emailVerifyNumber))
                 .vrfStatCd("0010")  // 인증유형코드 (이메일: 0010, 문자: 0020)
@@ -62,7 +62,7 @@ public class EmailSenderService {
     }
 
     public boolean verificationEmailNumber(
-            EmailVerificationNumberDto emailVerificationNumberDto
+            UserVerificationNumberDto emailVerificationNumberDto
     ) {
          if (emailVerify.checkEmailVerificationInfo(emailVerificationNumberDto)) {
              emailVerify.updateEmailStat(emailVerificationNumberDto);

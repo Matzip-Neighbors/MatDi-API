@@ -56,7 +56,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     // H2
-    runtimeOnly 'com.h2database:h2:1.4.199'
+    runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
 test {

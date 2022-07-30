@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user` cascade;
 
 CREATE TABLE `user` (
                         `user_id`	INT(11)	NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -15,7 +15,7 @@ CREATE TABLE `user` (
                         `last_login_dtm`	TIMESTAMP	NULL
 );
 
-DROP TABLE IF EXISTS `diary`;
+DROP TABLE IF EXISTS `diary` cascade;
 
 CREATE TABLE `diary` (
                          `diary_id`	INT(11)	NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -74,7 +74,7 @@ CREATE TABLE `cmnt` (
                         `cmnt_mod_dtm`	TIMESTAMP	NULL
 );
 
-DROP TABLE IF EXISTS `htag`;
+DROP TABLE IF EXISTS `htag` cascade;
 
 CREATE TABLE `htag` (
                         `htag_nm`	VARCHAR(200)	NOT NULL PRIMARY KEY,
@@ -99,7 +99,7 @@ CREATE TABLE `like` (
 DROP TABLE IF EXISTS `verification`;
 
 CREATE TABLE `verification` (
-                                `vrf_id`	INT(11)	NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `vrf_id`	INTEGER AUTO_INCREMENT PRIMARY KEY,
                                 `email`	VARCHAR(200)	NOT NULL,
                                 `vrf_no`	VARCHAR(6)	NOT NULL,
                                 `vrf_tp_cd`	VARCHAR(5)	NOT NULL	COMMENT '-이메일 0010

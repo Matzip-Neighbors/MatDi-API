@@ -1,4 +1,4 @@
-package com.mn.matdi.dto.email;
+package com.mn.matdi.dto.userVerification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailVerifyResponseDto {
-    private Long id;
+public class UserVerificationResponseDto {
     private String email;
     private String vrfNo;
     private String vrfTpCd;

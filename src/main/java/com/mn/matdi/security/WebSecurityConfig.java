@@ -140,8 +140,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // Email 인증
-        skipPathList.add("POST,/api/emailVerificationNumber");
-        skipPathList.add("POST,/api/emailVerificationNumber/check");
+        skipPathList.add("POST,/api/userVerificationNumber");
+        skipPathList.add("POST,/api/userVerificationNumber/check");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
