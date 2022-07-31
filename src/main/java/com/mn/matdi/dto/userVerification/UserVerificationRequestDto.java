@@ -1,4 +1,4 @@
-package com.mn.matdi.dto.email;
+package com.mn.matdi.dto.userVerification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailVerifyRequestDto {
+public class UserVerificationRequestDto {
     private Long id;
     private String email;
     private String vrfNo; //인증번호

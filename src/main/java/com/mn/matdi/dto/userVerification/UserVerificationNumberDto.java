@@ -1,4 +1,4 @@
-package com.mn.matdi.dto.email;
+package com.mn.matdi.dto.userVerification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailVerificationNumberDto {
+public class UserVerificationNumberDto {
     private String email;
     private String vrfNo;
 }

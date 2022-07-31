@@ -8,11 +8,11 @@ spring:
 #      username: ENC(05YNRyPs0WNUjs7uns8d9w==)
 #      password: ENC(L9CnTseQNs6ikvR+CDnyn0R/gVw0z4Wu)
 
-
     driver-class-name: org.h2.Driver  #h2 드라이버 설정
     url: jdbc:h2:~/test  #접속 URL
     username: ENC(zJDHU1kXsxfW5cbFROldhw==) # 사용자 이름 (로그인 시 사용)
     password: ENC(YCpqImgdltL2qKQ/R62LPg==) # 사용자
+    initialization-mode: always
 
   h2:
     console:

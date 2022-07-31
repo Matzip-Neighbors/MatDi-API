@@ -1,17 +1,17 @@
 package com.mn.matdi.mapper;
 
-import com.mn.matdi.dto.email.EmailVerificationNumberDto;
-import com.mn.matdi.dto.email.EmailVerifyResponseDto;
+import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
+import com.mn.matdi.dto.userVerification.UserVerificationResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EmailVerify {
 
-    void insertEmailVerificationInfo(EmailVerifyResponseDto emailVerifyResponseDto);
+    void insertEmailVerificationInfo(UserVerificationResponseDto emailVerifyResponseDto);
 
-    boolean checkEmailVerificationInfo(EmailVerificationNumberDto request);
+    boolean checkEmailVerificationInfo(UserVerificationNumberDto request);
 
-    void updateEmailStat(EmailVerificationNumberDto request);
+    void updateEmailStat(UserVerificationNumberDto request);
 
     Integer emailDuplicationCheck(String email);
 
