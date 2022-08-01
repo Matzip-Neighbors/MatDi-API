@@ -5,9 +5,9 @@ import com.mn.matdi.dto.userVerification.UserVerificationResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface EmailVerify {
+public interface UserVerificationMapper {
 
-    void insertEmailVerificationInfo(UserVerificationResponseDto emailVerifyResponseDto);
+    void insertUserVerificationInfo(UserVerificationResponseDto emailVerifyResponseDto);
 
     boolean checkEmailVerificationInfo(UserVerificationNumberDto request);
 
