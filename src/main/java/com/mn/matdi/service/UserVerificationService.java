@@ -1,9 +1,11 @@
 package com.mn.matdi.service;
 
+import com.mn.matdi.dto.userVerification.EmailSenderDto;
 import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
 import com.mn.matdi.dto.userVerification.UserVerificationRequestDto;
 import com.mn.matdi.dto.userVerification.UserVerificationResponseDto;
 import com.mn.matdi.mapper.UserVerificationMapper;
+import com.mn.matdi.utils.EmailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,7 +20,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class UserVerificationService {
 
-    private final JavaMailSender javaMailSender;
+    private final EmailSender emailSender;
     private final UserVerificationMapper userVerificationMapper;
     private final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
 
@@ -50,22 +52,21 @@ public class UserVerificationService {
 
         userVerificationMapper.insertUserVerificationInfo(userVerificationResponseDto);
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-        helper.setFrom(fromMail);
-        helper.setTo(toMail);
-        helper.setSubject(title);
-        helper.setText(content,true);
-        javaMailSender.send(message);
+        emailSender.emailSender(EmailSenderDto.builder()
+                .fromMail(fromMail)
+                .toMail(toMail)
+                .title(title)
+                .content(content)
+                .build());
 
         return userVerificationResponseDto;
     }
 
     public boolean verificationEmailNumber(
-            UserVerificationNumberDto emailVerificationNumberDto
+            UserVerificationNumberDto userVerificationNumberDto
     ) {
-         if (userVerificationMapper.checkEmailVerificationInfo(emailVerificationNumberDto)) {
-             userVerificationMapper.updateEmailStat(emailVerificationNumberDto);
+         if (userVerificationMapper.checkUserVerificationNumber(userVerificationNumberDto)) {
+             userVerificationMapper.updateEmailStat(userVerificationNumberDto);
              return true;
          }
          return false;
