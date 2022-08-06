@@ -27,7 +27,9 @@ public class UserVerificationController {
 
     @Operation(summary = "이메일 인증번호 검증")
     @PostMapping("/api/userVerificationNumber/check")
-    public Boolean mailCheckNumber(@RequestBody UserVerificationNumberDto emailVerificationNumberDto) {
-        return emailSenderService.verificationEmailNumber(emailVerificationNumberDto);
+    public UserVerificationResponseDto mailCheckNumber(
+            @RequestBody UserVerificationNumberDto userVerificationNumberDto
+    ) {
+        return emailSenderService.verificationEmailNumber(userVerificationNumberDto);
     }
 }

@@ -4,6 +4,8 @@ import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
 import com.mn.matdi.dto.userVerification.UserVerificationResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Optional;
+
 @Mapper
 public interface UserVerificationMapper {
 
@@ -11,7 +13,7 @@ public interface UserVerificationMapper {
     void insertUserVerificationInfo(UserVerificationResponseDto emailVerifyResponseDto);
 
     // 유저인증 숫자 입력
-    boolean checkUserVerificationNumber(UserVerificationNumberDto userVerificationNumberDto);
+    Optional<UserVerificationResponseDto> checkUserVerificationNumber(UserVerificationNumberDto userVerificationNumberDto);
 
     void updateEmailStat(UserVerificationNumberDto userVerificationNumberDto);
 

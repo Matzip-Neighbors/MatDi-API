@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -62,13 +63,17 @@ public class UserVerificationService {
         return userVerificationResponseDto;
     }
 
-    public boolean verificationEmailNumber(
+    public UserVerificationResponseDto verificationEmailNumber(
             UserVerificationNumberDto userVerificationNumberDto
     ) {
-         if (userVerificationMapper.checkUserVerificationNumber(userVerificationNumberDto)) {
-             userVerificationMapper.updateEmailStat(userVerificationNumberDto);
-             return true;
-         }
-         return false;
+        UserVerificationResponseDto userVerificationResponseDto = userVerificationMapper.
+                                                                checkUserVerificationNumber(userVerificationNumberDto)
+                .orElseThrow(
+                        () -> new NullPointerException("데이터가 없습니다.")
+                );
+
+         userVerificationMapper.updateEmailStat(userVerificationNumberDto);
+
+         return userVerificationResponseDto;
     }
 }

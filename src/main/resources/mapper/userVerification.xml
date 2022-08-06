@@ -12,26 +12,30 @@
             vrf_stat_cd,
             expr_dtm
         )VALUES (
-           #{email},
-           #{vrfNo},
-           #{vrfTpCd},
-           #{vrfStatCd},
-           NOW() + INTERVAL 1 HOUR
+           #{email},                -- 이메일
+           #{vrfNo},                -- 인증번호
+           #{vrfTpCd},              -- 인증유형코드 (이메일: 0010, 문자: 0020)
+           #{vrfStatCd},            -- 인증상태코드 (미인증: 0010, 인증: 0020, 인증실패: 0030)
+           NOW() + INTERVAL 1 HOUR  -- 만료일시
        )
     </insert>
 
     <!--이메일 인증번호 인증 -->
     <select id="checkUserVerificationNumber" parameterType="com.mn.matdi.dto.userVerification.UserVerificationNumberDto"
-            resultType="boolean">
-               select *
-               from verification
-               where email = #{email}
-                 and vrf_no = #{vrfNo}
+            resultType="com.mn.matdi.dto.userVerification.UserVerificationResponseDto">
+           select *
+           from verification
+           where email = #{email}                       -- 이메일
+             and vrf_no = #{vrfNo}                      -- 인증번호
+             and <![CDATA[(expr_dtm - 1) < NOW() ]]>    -- 만료가 되지 않은
+             and vrf_stat_cd != '0020'                  -- 이미 인증이 안된 것
     </select>
 
     <!--이메일 인증이되면 상태코드 변경-->
     <update id="updateEmailStat" parameterType="String">
-        UPDATE verification set vrf_stat_cd = '0020' where email = #{email}
+        UPDATE verification
+        set vrf_stat_cd = '0020'
+        where email = #{email}
     </update>
 
     <!-- 이메일 중복 체크 -->
