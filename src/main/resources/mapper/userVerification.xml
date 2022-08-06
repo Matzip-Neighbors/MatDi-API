@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mn.matdi.mapper.EmailVerify">
+<mapper namespace="com.mn.matdi.mapper.UserVerificationMapper">
     <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
-    <insert id="insertEmailVerificationInfo" parameterType="com.mn.matdi.dto.userVerification.UserVerificationResponseDto"
-            keyProperty="vrf_id">
+    <insert id="insertUserVerificationInfo" parameterType="com.mn.matdi.dto.userVerification.UserVerificationResponseDto"
+                                                                                                keyProperty="vrf_id">
         INSERT INTO verification (
             email,
             vrf_no,
@@ -21,19 +21,12 @@
     </insert>
 
     <!--이메일 인증번호 인증 -->
-    <select id="checkEmailVerificationInfo" parameterType="String" resultType="boolean">
-        SELECT IF(
-                       EXISTS(
-                               select *
-                               from verification
-                               where email = #{email}
-                                 and vrf_no = #{vrfNo}
-                                 and (expr_dtm > now())
-                           ),
-                       'true',
-                       'false'
-                   )
-
+    <select id="checkUserVerificationNumber" parameterType="com.mn.matdi.dto.userVerification.UserVerificationNumberDto"
+            resultType="boolean">
+               select *
+               from verification
+               where email = #{email}
+                 and vrf_no = #{vrfNo}
     </select>
 
     <!--이메일 인증이되면 상태코드 변경-->
