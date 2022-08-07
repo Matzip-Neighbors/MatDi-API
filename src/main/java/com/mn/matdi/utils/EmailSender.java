@@ -1,6 +1,6 @@
 package com.mn.matdi.utils;
 
-import com.mn.matdi.dto.userVerification.EmailSenderDto;
+import com.mn.matdi.dto.emailSender.EmailSenderDto;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
