@@ -1,4 +1,4 @@
-package com.mn.matdi.dto.userVerification;
+package com.mn.matdi.dto.emailSender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

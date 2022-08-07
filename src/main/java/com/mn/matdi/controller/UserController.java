@@ -1,6 +1,6 @@
 package com.mn.matdi.controller;
 
-import com.mn.matdi.dto.user.UserSignUpRequestDto;
+import com.mn.matdi.dto.user.User;
 import com.mn.matdi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class UserController {
 
     @Operation(summary = "맛디 회원가입")
     @PostMapping("/api/user/signup")
-    public Long userSignup(@RequestBody  UserSignUpRequestDto userSignUpRequestDto) {
+    public Long userSignup(@RequestBody User.Request userSignUpRequestDto) {
         return userService.userSignup(userSignUpRequestDto);
     }
 }
