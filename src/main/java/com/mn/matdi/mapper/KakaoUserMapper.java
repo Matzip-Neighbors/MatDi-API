@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface KakaoUserMapper {
 
     @Select("SELECT * FROM user WHERE email = #{email}")
-    Optional<User> findByUserEmail(@Param("email") String email);
+    Optional<User.Info> findByUserEmail(@Param("email") String email);
 
-    void insertKakaoUser(User user);
+    void insertKakaoUser(User.Info user);
 }

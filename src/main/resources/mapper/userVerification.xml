@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mn.matdi.mapper.UserVerificationMapper">
     <!--이메일 인증정보 삽입 및 만료기간 +1시간 -->
-    <insert id="insertUserVerificationInfo" parameterType="com.mn.matdi.dto.userVerification.UserVerificationResponseDto"
+    <insert id="insertUserVerificationInfo" parameterType="com.mn.matdi.dto.userVerification.UserVerification$Info"
                                                                                                 keyProperty="vrf_id">
         INSERT INTO verification (
             email,
@@ -22,7 +22,7 @@
 
     <!--이메일 인증번호 인증 -->
     <select id="checkUserVerificationNumber" parameterType="com.mn.matdi.dto.userVerification.UserVerificationNumberDto"
-            resultType="com.mn.matdi.dto.userVerification.UserVerificationResponseDto">
+            resultType="com.mn.matdi.dto.userVerification.UserVerification$Info">
            select *
            from verification
            where email = #{email}                       -- 이메일

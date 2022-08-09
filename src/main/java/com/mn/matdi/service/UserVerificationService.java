@@ -21,7 +21,7 @@ public class UserVerificationService {
     private final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
 
     @Value("${spring.mail.username}")
-    private final String fromMail;
+    private String fromMail;
 
     public UserVerification.Response sendUserVerificationNumber(
             UserVerification.Request userVerificationRequestDto
