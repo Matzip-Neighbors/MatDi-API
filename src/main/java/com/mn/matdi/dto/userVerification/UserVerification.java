@@ -21,6 +21,7 @@ public class UserVerification {
         private String email;
 
     }
+
     @Getter
     @AllArgsConstructor
     public static class Response {
