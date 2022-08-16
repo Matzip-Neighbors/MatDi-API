@@ -3,6 +3,8 @@ package com.mn.matdi.service;
 import com.mn.matdi.dto.emailSender.EmailSenderDto;
 import com.mn.matdi.dto.userVerification.UserVerification;
 import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
+import com.mn.matdi.exception.BusinessException;
+import com.mn.matdi.exception.ErrorCode;
 import com.mn.matdi.mapper.UserVerificationMapper;
 import com.mn.matdi.utils.EmailSender;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -21,7 +24,7 @@ public class UserVerificationService {
     private final long EMAIL_TOKEN_EXPIRATION_TIME_VALUE = 5L;
 
     @Value("${spring.mail.username}")
-    private final String fromMail;
+    private String fromMail;
 
     public UserVerification.Response sendUserVerificationNumber(
             UserVerification.Request userVerificationRequestDto
@@ -87,14 +90,15 @@ public class UserVerificationService {
     public UserVerification.Response verificationEmailNumber(
             UserVerificationNumberDto userVerificationNumberDto
     ) {
-        UserVerification.Response userVerificationResponseDto = userVerificationMapper.
-                                                                checkUserVerificationNumber(userVerificationNumberDto)
-                .orElseThrow(
-                        () -> new NullPointerException("데이터가 없습니다.")
-                );
+        Optional<UserVerification.Info> userVerificationInfo = userVerificationMapper.
+                                                                checkUserVerificationNumber(userVerificationNumberDto);
 
-         userVerificationMapper.updateEmailStat(userVerificationNumberDto);
+        if (userVerificationInfo.isPresent()) {
+            userVerificationMapper.updateEmailStat(userVerificationNumberDto);
+        }
 
-         return userVerificationResponseDto;
+
+
+         return UserVerification.Response();
     }
 }

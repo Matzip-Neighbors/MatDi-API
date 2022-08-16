@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper {
-      Long insertUser(User.Request userSignUpRequestDto);
+      Long insertUser(User.Request userRequest);
 }

@@ -1,9 +1,6 @@
 package com.mn.matdi.dto.userVerification;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 public class UserVerification {
@@ -20,10 +17,9 @@ public class UserVerification {
     }
 
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class Request {
         private String email;
+
     }
 
     @Getter

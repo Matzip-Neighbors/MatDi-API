@@ -10,14 +10,14 @@ import java.util.Collections;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
-    private final User user;
+    private final User.Info user;
 
 
-    public User getUser() {
+    public User.Info getUser() {
         return user;
     }
 
-    public UserDetailsImpl(User user) {
+    public UserDetailsImpl(User.Info user) {
         this.user = user;
     }
 

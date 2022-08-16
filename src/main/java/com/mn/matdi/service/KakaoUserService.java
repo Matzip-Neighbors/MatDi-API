@@ -50,7 +50,7 @@ public class KakaoUserService {
         KakaoUser.Response kakaoUserDto = getKakaoUserInfo(accessToken);
 
         // 3. "카카오 사용자 정보"로 필요시 회원가입  및 이미 같은 이메일이 있으면 기존회원으로 로그인
-        User kakaoUser = registerKakaoOrUpdateKakao(kakaoUserDto);
+        User.Info kakaoUser = registerKakaoOrUpdateKakao(kakaoUserDto);
 
         // 4. 강제 로그인 처리
         final String AUTH_HEADER = "Authorization";
@@ -138,8 +138,8 @@ public class KakaoUserService {
     }
 
 
-    private User registerKakaoOrUpdateKakao(KakaoUser.Response kakaoUserDto) {
-        Optional<User> sameUser = userMapper.findByUserEmail(kakaoUserDto.getEmail());
+    private User.Info registerKakaoOrUpdateKakao(KakaoUser.Response kakaoUserDto) {
+        Optional<User.Info> sameUser = userMapper.findByUserEmail(kakaoUserDto.getEmail());
 
         if (!sameUser.isPresent()) {
             return registerKakaoUserIfNeeded(kakaoUserDto);
@@ -149,10 +149,10 @@ public class KakaoUserService {
     }
 
 
-    private User registerKakaoUserIfNeeded(KakaoUser.Response kakaoUserDto) {
+    private User.Info registerKakaoUserIfNeeded(KakaoUser.Response kakaoUserDto) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         String kakaoEmail = kakaoUserDto.getEmail();
-        Optional<User> kakaoUser = userMapper.findByUserEmail(kakaoEmail);
+        Optional<User.Info> kakaoUser = userMapper.findByUserEmail(kakaoEmail);
 
         if (!kakaoUser.isPresent()) {
 
@@ -173,7 +173,7 @@ public class KakaoUserService {
             // 유저 상태코드(탈퇴여부)
             String userStatCd = "0010";
 
-            kakaoUser = Optional.ofNullable(User.builder()
+            kakaoUser = Optional.ofNullable(User.Info.builder()
                     .email(kakaoEmail)
                     .userPwd(encodedPassword)
                     .userNm(nickname)
@@ -187,7 +187,7 @@ public class KakaoUserService {
         return kakaoUser.get();
     }
 
-    private String forceLogin(User kakaoUser) {
+    private String forceLogin(User.Info kakaoUser) {
         UserDetailsImpl userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
