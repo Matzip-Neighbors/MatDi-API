@@ -13,7 +13,7 @@ public interface UserVerificationMapper {
     void insertUserVerificationInfo(UserVerification.Info userVerificationInfoDto);
 
     // 유저인증 숫자 입력
-    Optional<UserVerification.Response> checkUserVerificationNumber(UserVerificationNumberDto userVerificationNumberDto);
+    Optional<UserVerification.Info> checkUserVerificationNumber(UserVerificationNumberDto userVerificationNumberDto);
 
     void updateEmailStat(UserVerificationNumberDto userVerificationNumberDto);
 
