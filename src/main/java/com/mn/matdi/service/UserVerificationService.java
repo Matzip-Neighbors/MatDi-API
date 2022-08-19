@@ -3,8 +3,6 @@ package com.mn.matdi.service;
 import com.mn.matdi.dto.emailSender.EmailSenderDto;
 import com.mn.matdi.dto.userVerification.UserVerification;
 import com.mn.matdi.dto.userVerification.UserVerificationNumberDto;
-import com.mn.matdi.exception.BusinessException;
-import com.mn.matdi.exception.ErrorCode;
 import com.mn.matdi.mapper.UserVerificationMapper;
 import com.mn.matdi.utils.EmailSender;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +49,7 @@ public class UserVerificationService {
                 toMail,
                 userVerificationNumber,
                 vrfTpCd,
-                vrfStatCd,
-                emailSenderReturnMessage
+                vrfStatCd
         );
     }
 
@@ -93,12 +90,21 @@ public class UserVerificationService {
         Optional<UserVerification.Info> userVerificationInfo = userVerificationMapper.
                                                                 checkUserVerificationNumber(userVerificationNumberDto);
 
+        UserVerification.Info userVerification = null;
+
         if (userVerificationInfo.isPresent()) {
             userVerificationMapper.updateEmailStat(userVerificationNumberDto);
         }
 
+        userVerification = userVerificationInfo.get();
 
-
-         return UserVerification.Response();
+         return UserVerification.Response.builder()
+                 .email(userVerification.getEmail())
+                 .vrfTpCd(userVerification.getVrfTpCd())
+                 .vrfStatCd(userVerification.getVrfStatCd())
+                 .vrfNo(userVerification.getVrfNo())
+                 .build();
     }
+
+
 }

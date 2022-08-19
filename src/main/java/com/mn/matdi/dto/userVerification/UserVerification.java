@@ -23,12 +23,13 @@ public class UserVerification {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class Response {
         private String email;
         private String vrfNo;
         private String vrfTpCd;
         private String vrfStatCd;
-        private String emailSenderReturnMessage;
     }
 }
